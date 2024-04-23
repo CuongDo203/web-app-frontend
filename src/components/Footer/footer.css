@@ -1,0 +1,14 @@
+.footer-description {
+    color: rgb(173, 178, 203);
+}
+
+#footer .container{
+    /* display: flex; */
+    position: relative;
+    /* z-index: 1; */
+    /* width: 100vw; */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+}

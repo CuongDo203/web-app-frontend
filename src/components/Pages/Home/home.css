@@ -1,7 +1,16 @@
-.intro_section{
+#home .intro_section{
     text-align: center;
-    color: #fff;
+    color: #ccc;
     padding: 56px 20px 20px 20px;
+}
+
+.container .card {
+    max-width: 340px;
+}
+
+.card-img-top {
+    /* max-width: 336px; */
+    max-height: 336px;
 }
 
 .search_box{
@@ -72,7 +81,7 @@
     color: rgb(173, 178, 203);
 }
 
-.product_warranty{
+.product-warranty .card-text{
     color: rgb(242, 126, 212);
 }
 
@@ -94,7 +103,3 @@
 .space_x{
     margin: 0 5px;
 }
-
-.footer {
-    padding-top: 16px;
-}   

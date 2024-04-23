@@ -1,9 +1,10 @@
 import React from 'react'
+import './footer.css'
 
 function Footer() {
     return (
         <footer>
-            <div className="footer">
+            <div id="footer">
                 <div className="container">
                     <div className="row footer-description">
                         <div className="col-md-6">
@@ -12,7 +13,7 @@ function Footer() {
                         <div className="col-md-6">
                             <div className="text-end">Terms of Service | Privacy Policy</div>
                         </div>
-                    </div>
+                    </div>  
                 </div>
             </div>
         </footer>

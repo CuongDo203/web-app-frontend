@@ -1,38 +1,38 @@
-.container {
+#order {
     color: #fff;
 }
 
-.intro-section{
+#order .intro-section{
     text-align: center;
     color: #fff;
     padding: 56px 20px 20px 20px;
 }
 
-.product-header{
-    color: rgb(233, 66, 176);
+#order .product-header{
+    color: rgb(105, 244, 181);
 }
 
-.form-label{
+#order .form-label{
     color: #fff;
 }
 
-.form-control{
+#order .form-control{
     background-color: rgb(19, 23, 42);
     border: 1px solid rgb(29, 33, 54);
     color: #fff;
 }
 
-.form-control:focus {
+#order .form-control:focus {
     border-color: #fff;
     background-color: rgb(19, 23, 42);
     color: #fff;
 }
 
-.product-order{
+#order .product-order{
     color: rgb(105, 244, 181);
 }
 
-table {
+#order table {
     width: 100%;
     border-radius: 10px;
     border: none;
@@ -48,14 +48,14 @@ td {
     text-align: center;
 }
 
-.product-image{
+#order .product-image{
     width: 100px;
     height: 100px;
     border-radius: 5px;
     margin-right: 10px;
 }
 
-.product-name {
+#order .product-name {
     color: #fff;
     margin-right: 10px;
 }
