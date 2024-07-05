@@ -1,3 +1,4 @@
+
 const initialState = {
     cartItems: [],
     couponCode: '',
@@ -30,6 +31,14 @@ const OrderReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             }    
+        case 'PLACE_ORDER':
+            return {
+                ...state,
+                orderData: {
+                    ...state.orderData,
+                    ...(action.payload)
+                }
+            }
         default:
             return state
     }
