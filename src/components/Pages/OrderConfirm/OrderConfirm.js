@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../../Header/Header'
 import Footer from '../../Footer/Footer'
 import './orderConfirm.css'
+import CartService from '../../../services/CartService'
+import { useDispatch, useSelector } from 'react-redux';
+import { getProductsInCart } from '../../../actions/OrderActions'
 
 function OrderConfirm() {
+
+  const cartService = new CartService()
+  const { cartItems } = useSelector(state => state.getProductsInCart)
+  const dispatch = useDispatch();
+  const cart = cartService.getCart()
+  
+  useEffect(() => {
+    dispatch(getProductsInCart(cart))
+  }, [dispatch, cart])
+
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0).toFixed(2)
+  }
+
   return (
     <>
       <Header />
@@ -23,33 +40,26 @@ function OrderConfirm() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <div className="product-info">
-                    <img src={require("../../../assets/img/macbookpro.jpg")} alt="Product image" className="product-image"/>
-                      <span className="product-name">Macbook pro 2023</span>
-                  </div>
-                </td>
-                <td>2</td>
-                <td>$500</td>
-                <td>$1000</td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="product-info">
-                    <img src={require("../../../assets/img/macbookpro.jpg")} alt="Product image" className="product-image"/>
-                      <span className="product-name">Macbook M1</span>
-                  </div>
-                </td>
-                <td>2</td>
-                <td>$500</td>
-                <td>$1000</td>
-              </tr>
-
+              {cartItems.map((item, idx) => (
+                <tr key={idx}>
+                  <td>
+                    <div className="product-info">
+                      <img src={item.product.thumbnail} alt="Product" className="product-image" />
+                      <span className="product-name">{item.product.name}</span>
+                    </div>
+                  </td>
+                  <td>{item.quantity}</td>
+                  <td>${item.product.price}</td>
+                  <td>${(item.product.price * item.quantity).toFixed(2)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
+          <div className="text-start mt-3">
+            <h4 className="header-text text-end">Tổng giá: ${calculateTotal()}</h4>
+          </div>
           <div className="text-center mt-4">
-            <button className="btn btn-gradient" type="button">Tiếp tục mua sắm</button>
+            <button className="btn btn-gradient" type="button">Thanh toán</button>
           </div>
         </div>
       </div>

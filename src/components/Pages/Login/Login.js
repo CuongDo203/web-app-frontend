@@ -1,9 +1,30 @@
-import Footer from '../../Footer/Footer'
+import { useState } from 'react'
 import './login.css'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../../actions/authActions'
 
 function Login() {
+
+    const [userLogin, setUserLogin] = useState({
+        phone: '',
+        password: ''
+    })
+
+    const {isAuthenticated} = useSelector((state) => state.auth)
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        dispatch(login(userLogin.phone, userLogin.password))
+        if(isAuthenticated) {
+            navigate("/")
+        }
+    }
+
     return (
         <>
             {/* <div id="login" className="container">
@@ -55,39 +76,34 @@ function Login() {
 
             <section className="p-3 p-md-4 p-xl-5">
                 <Container id="login">
-                    <Row>
-                        <Col xs={12} md={6} className="bsb-tpl-bg-platinum">
-                            <div className="d-flex flex-column justify-content-between h-100 p-3 p-md-4 p-xl-5">
-                                <h3 className="m-0">Welcome!</h3>
-                                <img className="img-fluid rounded mx-auto my-4" loading="lazy" src={require("../../../assets/img/login.jpg")} width="100%" height="100%" alt="BootstrapBrain Logo" />
-                                <p className="mb-0">Not a member yet? <Link to="/register" className="link-secondary text-decoration-none">Register now</Link></p>
-                            </div>
-                        </Col>
+                    <Row className="d-flex justify-content-center align-items-center">
                         <Col xs={12} md={6} className="bsb-tpl-bg-lotion">
                             <div className="p-3 p-md-4 p-xl-5">
                                 <div className="row">
                                     <div className="col-12">
-                                        <div className="mb-5">
-                                            <h3>Log in</h3>
+                                        <div className="mb-5 align-items-center">
+                                            <h3 className='text-center'>Log in</h3>
                                         </div>
                                     </div>
                                 </div>
-                                <Form>
+                                <Form onSubmit={handleSubmit}>
                                     <Row className="gy-3 gy-md-4 overflow-hidden">
                                         <Col xs={12}>
                                             <Form.Label htmlFor="phone">Phone <span className="text-danger">*</span></Form.Label>
-                                            <Form.Control type="phone" name="phone" id="phone" required />
+                                            <Form.Control type="phone" name="phone" id="phone" required value={userLogin.phone}
+                                            onChange={(e) => setUserLogin({...userLogin, phone: e.target.value})}/>
                                         </Col>
                                         <Col xs={12}>
                                             <Form.Label htmlFor="password">Password <span className="text-danger">*</span></Form.Label>
-                                            <Form.Control type="password" name="password" id="password" required />
+                                            <Form.Control type="password" name="password" id="password" required value={userLogin.password}
+                                            onChange={(e) => setUserLogin({...userLogin, password: e.target.value})}/>
                                         </Col>
                                         <Col xs={12}>
                                             <Form.Check type="checkbox" id="remember_me" label="Keep me logged in" />
                                         </Col>
                                         <Col xs={12}>
                                             <div className="d-grid">
-                                                <Button variant="primary" type="submit">Log in now</Button>
+                                                <Button variant="primary" type="submit" onClick={() => handleSubmit}>Log in now</Button>
                                             </div>
                                         </Col>
                                     </Row>
@@ -95,8 +111,9 @@ function Login() {
                                 <div className="row">
                                     <div className="col-12">
                                         <hr className="mt-5 mb-4 border-secondary-subtle" />
-                                        <div className="text-end">
-                                            <a href="#!" className="link-secondary text-decoration-none">Forgot password</a>
+                                        <div className="d-flex justify-content-between">
+                                            <p className="mb-0 d-inline">Not a member yet? <Link to="/register" className="link-secondary text-decoration-none">Register now</Link></p>
+                                            <Link to="#!" className="link-secondary text-decoration-none text-end">Forgot password</Link>
                                         </div>
                                     </div>
                                 </div>

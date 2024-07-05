@@ -13,10 +13,8 @@ import Order from './components/Pages/Order/Order';
 import Register from './components/Pages/Register/Register';
 import DetailProduct from "./components/Pages/DetailProduct/DetailProduct";
 import OrderConfirm from "./components/Pages/OrderConfirm/OrderConfirm";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 function NoMatch() {
   return (
@@ -29,12 +27,11 @@ function NoMatch() {
 
 function App() {
   return (
-    <Router>
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/orders" element={<Order />} />
-          <Route path="/product-detail" element={<DetailProduct />} />
+          <Route path="/product-detail/:productId" element={<DetailProduct />} />
           <Route path="/order-confirmation" element={<OrderConfirm />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -42,7 +39,6 @@ function App() {
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </div>
-    </Router>
   );
 }
 

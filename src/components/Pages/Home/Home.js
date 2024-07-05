@@ -1,9 +1,48 @@
 import Header from "../../Header/Header"
 import Footer from "../../Footer/Footer"
 import "./home.css"
-import { Button, ButtonGroup, Card, CardText, Col, Row } from "react-bootstrap"
+import { Button, Card, CardText, Col, Row, Pagination, Form, FormControl, InputGroup } from "react-bootstrap"
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts, changePage, getCategories } from "../../../actions/productActions";
+import { useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { getDetailProduct } from '../../../actions/detailProductAction'
 
 function Home() {
+
+    const { categories, products, totalPages, currentPage, visiblePages, limitPerPages, keyword, categoryId } = useSelector(
+        (state) => state.getProducts
+    )
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate() 
+
+    const [textVal, setTextVal] = useState('')
+    const [selectedCategoryId, setSelectedCategoryId] = useState(0)
+
+    
+    useEffect(() => {
+        dispatch(getProducts(keyword, categoryId, currentPage, limitPerPages));
+        dispatch(getCategories())
+    }, [currentPage, limitPerPages, categoryId, keyword, dispatch])
+
+    const onPageChange = (page) => {
+        dispatch(changePage(page))
+    }
+
+    const getDetailClick = (id) => {
+        dispatch(getDetailProduct(id))
+        navigate(`/product-detail/${id}`)
+    }
+
+    const onSelectedCategoryChange = (e) => {
+        setSelectedCategoryId(e.target.value)
+    }
+
+    const searchProducts = () => {
+        dispatch(getProducts(textVal, selectedCategoryId, 0, limitPerPages))
+    }
+
     return (
         <>
             <Header />
@@ -14,141 +53,67 @@ function Home() {
                         <p>Trang này hiển thị danh sách các sản phẩm kèm ảnh</p>
                         <p>Các bạn có thể chọn sản phẩm và mua hàng tại đây</p>
                     </div>
-                    <div className="search_box">
-                        <input type="text" className="search-input form-control" placeholder="Tìm sản phẩm" />
-                        <select className="form-control product-category">
-                            <option defaultValue={this} disabled>Danh mục sản phẩm</option>
-                            <option>Đồ điện tử</option>
-                            <option>Đồ gia dụng</option>
-                            <option>Đồ bánh kẹo</option>
-                            <option>Hải sản</option>
-                        </select>
+
+                    <div className="mb-5">
+                        <InputGroup className="d-flex justify-content-center">
+                            <Row>
+                                <Col md>
+                                    <FormControl type="text" placeholder="Tìm sản phẩm" value={textVal}
+                                    onChange={(e) => setTextVal(e.target.value)}/>
+                                </Col>
+                                <Col md>
+                                    <Form.Select onChange={(e) => onSelectedCategoryChange(e)}>
+                                        <option value={0}>Tất cả</option>
+                                        {categories.map((item) => (<option key={item.id} value={item.id}>{item.name}</option>))}
+                                    </Form.Select>
+                                </Col>
+                                <Col md>
+                                    <Button variant="primary" onClick={() => searchProducts()}>Tìm kiếm</Button>
+                                </Col>
+                            </Row>
+                        </InputGroup>
+
                     </div>
-                    {/* <div className="row">
-                        <div className="col-lg-4 col-md-6">
-                            <div className="product-item">
-                                <div className="card">
-                                    <img className="card-img-top" src={require("../../../assets/img/macbookpro.jpg")} alt="Macbook" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">Product 1</h5>
-                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card"s content.</p>
-                                        <p className="product-warranty">Bảo hành: 12 tháng</p>
-                                        <p className="product-price">Giá: <del>$600</del> $500 </p>
-                                        <div className="product-actions">
-                                            <button className="btn btn-primary">Thêm vào giỏ hàng</button>
-                                            <span className="space-x"></span>
-                                            <button className="btn btn-success">Mua ngay</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div className="col-lg-4 col-md-6">
-                            <div className="product-item">
-                                <div className="card">
-                                    <img className="card-img-top" src={require("../../../assets/img/macbookpro.jpg")} alt="Macbook" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">Product 1</h5>
-                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card"s content.</p>
-                                        <p className="product-warranty">Bảo hành: 12 tháng</p>
-                                        <p className="product-price">Giá: <del>$600</del> $500 </p>
-                                        <div className="product-actions">
-                                            <button className="btn btn-primary">Thêm vào giỏ hàng</button>
-                                            <span className="space-x"></span>
-                                            <button className="btn btn-success">Mua ngay</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-4 col-md-6">
-                            <div className="product-item">
-                                <div className="card">
-                                    <img className="card-img-top" src={require("../../../assets/img/macbookpro.jpg")} alt="Macbook" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">Product 1</h5>
-                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card"s content.</p>
-                                        <p className="product-warranty">Bảo hành: 12 tháng</p>
-                                        <p className="product-price">Giá: <del>$600</del> $500 </p>
-                                        <div className="product-actions">
-                                            <button className="btn btn-primary">Thêm vào giỏ hàng</button>
-                                            <span className="space-x"></span>
-                                            <button className="btn btn-success">Mua ngay</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-4 col-md-6">
-                            <div className="product-item">
-                                <div className="card">
-                                    <img className="card-img-top" src={require("../../../assets/img/macbookpro.jpg")} alt="Macbook" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">Product 1</h5>
-                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card"s content.</p>
-                                        <p className="product-warranty">Bảo hành: 12 tháng</p>
-                                        <p className="product-price">Giá: <del>$600</del> $500 </p>
-                                        <div className="product-actions">
-                                            <button className="btn btn-primary">Thêm vào giỏ hàng</button>
-                                            <span className="space-x"></span>
-                                            <button className="btn btn-success">Mua ngay</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-4 col-md-6">
-                            <div className="product-item">
-                                <div className="card">
-                                    <img className="card-img-top" src={require("../../../assets/img/macbookpro.jpg")} alt="Macbook" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">Product 1</h5>
-                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card"s content.</p>
-                                        <p className="product-warranty">Bảo hành: 12 tháng</p>
-                                        <p className="product-price">Giá: <del>$600</del> $500 </p>
-                                        <div className="product-actions">
-                                            <button className="btn btn-primary">Thêm vào giỏ hàng</button>
-                                            <span className="space-x"></span>
-                                            <button className="btn btn-success">Mua ngay</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> */}
                     <Row xs={1} md={3} className="g-4">
-                        {Array.from({ length: 4 }).map((_, idx) => (
+                        {products.map((product, idx) => (
                             <Col key={idx}>
                                 <Card>
-                                    <Card.Img variant="top" src={require("../../../assets/img/macbookpro.jpg")} />
+                                    {/* <Card.Img variant="top" src={require("../../../assets/img/macbookpro.jpg")} /> */}
+                                    <Card.Img variant="top" src={product.url} onClick={() => getDetailClick(product.id)}/>
                                     <Card.Body>
-                                        <Card.Title>Sản phẩm 1</Card.Title>
+                                        <Card.Title onClick={() => getDetailClick(product.id)}>{product.name}</Card.Title>
                                         <Card.Text>
-                                            This is a longer card with supporting text below as a natural
-                                            lead-in to additional content. This content is a little bit
-                                            longer.
+                                            {product.description}
                                         </Card.Text>
                                         <CardText className="product-warranty">
                                             Bảo hành: 12 tháng
                                         </CardText>
                                         <CardText className="product-price">
-                                            Giá: <del>$600</del> $500
+                                            Giá: ${product.price}
                                         </CardText>
-                                        <div className="product-actions">
+                                        {/* <div className="product-actions">
                                             <Button variant="primary">Thêm vào giỏ hàng</Button>
                                             <Button variant="success">Mua ngay</Button>
-                                        </div>
+                                        </div> */}
                                     </Card.Body>
                                 </Card>
                             </Col>
                         ))}
                     </Row>
                 </div>
+            </div>
+            <div className="d-flex justify-content-center mt-5">
+                <Pagination>
+                    <Pagination.First onClick={() => onPageChange(0)} />
+                    <Pagination.Prev disabled={currentPage === 0} onClick={() => onPageChange(currentPage - 1)} />
+                    {visiblePages.map((page, idx) => (
+                        <Pagination.Item key={idx} active={page === currentPage} onClick={() => onPageChange(page)}>{page + 1}</Pagination.Item>
+                    ))}
+                    <Pagination.Ellipsis disabled />
+                    <Pagination.Next disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage + 1)} />
+                    <Pagination.Last onClick={() => onPageChange(totalPages - 1)} />
+                </Pagination>
             </div>
             <Footer />
         </>
