@@ -7,6 +7,7 @@ import CartService from '../../../services/CartService';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsInCart, placeOrder } from '../../../actions/OrderActions';
 import { getUserId } from '../../../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 function Order() {
 
@@ -22,9 +23,10 @@ function Order() {
     })
 
     const cartService = new CartService()
+    const cart = cartService.getCart()
     const { cartItems } = useSelector(state => state.getProductsInCart)
     const dispatch = useDispatch();
-    const cart = cartService.getCart()
+    const navigate = useNavigate()
 
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0).toFixed(2)
@@ -48,8 +50,9 @@ function Order() {
             quantity: cartItem.quantity
         }));
         orderData.total_money = calculateTotal()
-        console.log(orderData)
         dispatch(placeOrder(orderData))
+        // cartService.clearCart()
+        navigate('/order-confirmation')
     };
 
     return (
@@ -59,7 +62,7 @@ function Order() {
                 <div id="order" className="container">
                     <div className="intro-section">
                         <h2>Đây là trang Order</h2>
-                        <p>Sử dụng bootstrap</p>
+                        <p>Mọi sản phẩm trong giỏ hàng của bạn đều ở đây</p>
                     </div>
                     <Form>
                         <Row className="justify-content-md-center">
