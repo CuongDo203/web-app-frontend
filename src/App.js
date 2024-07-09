@@ -26,13 +26,14 @@ function NoMatch() {
 }
 
 function App() {
+
   return (
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/orders" element={<Order />} />
+          <Route path="/order-confirmation/:id" element={<OrderConfirm />} />
           <Route path="/product-detail/:productId" element={<DetailProduct />} />
-          <Route path="/order-confirmation" element={<OrderConfirm />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/notifications" element={<NoMatch/>} />

@@ -17,6 +17,7 @@ export const getProductsInCart = (cart) => async (dispatch) => {
                 quantity: cart.get(productId)
             }
         })
+        console.log(dataResponse)
         dispatch({type: 'FETCH_PRODUCTS_BY_IDS_SUCCESS', payload: dataResponse})
     }
     catch (err) {

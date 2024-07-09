@@ -5,14 +5,16 @@ import { Button, Card, CardText, Col, Row, Pagination, Form, FormControl, InputG
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts, changePage, getCategories } from "../../../actions/productActions";
 import { useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getDetailProduct } from '../../../actions/detailProductAction'
+import { tokenVerify } from "../../../services/tokenService";
 
 function Home() {
 
     const { categories, products, totalPages, currentPage, visiblePages, limitPerPages, keyword, categoryId } = useSelector(
         (state) => state.getProducts
-    )
+    );
+    const {isAuthenticated} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     const navigate = useNavigate() 
@@ -20,7 +22,6 @@ function Home() {
     const [textVal, setTextVal] = useState('')
     const [selectedCategoryId, setSelectedCategoryId] = useState(0)
 
-    
     useEffect(() => {
         dispatch(getProducts(keyword, categoryId, currentPage, limitPerPages));
         dispatch(getCategories())
@@ -41,6 +42,10 @@ function Home() {
 
     const searchProducts = () => {
         dispatch(getProducts(textVal, selectedCategoryId, 0, limitPerPages))
+    }
+
+    if(!tokenVerify()) {
+        return <Navigate to="/login" />;
     }
 
     return (

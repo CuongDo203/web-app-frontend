@@ -4,6 +4,7 @@ const initialState = {
     couponCode: '',
     totalAmount: 0,
     orderData: {
+        id: 0,
         user_id: 0,
         fullname: '',
         email: '',

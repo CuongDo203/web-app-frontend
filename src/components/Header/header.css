@@ -13,3 +13,9 @@
     border-radius: 5px;
 
 }
+
+.navbar-nav .isActive {
+    background-color: blue;
+    height: 100%;
+    border-radius: 15px;
+}

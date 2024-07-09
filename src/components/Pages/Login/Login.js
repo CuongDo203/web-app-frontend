@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './login.css'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../actions/authActions'
 
@@ -17,63 +17,22 @@ function Login() {
 
     const navigate = useNavigate()
 
+    
+    
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(login(userLogin.phone, userLogin.password))
-        if(isAuthenticated) {
-            navigate("/")
-        }
+        // if(isAuthenticated) {
+        //     navigate("/")
+        // }
+    }
+
+    if(isAuthenticated) {
+        return <Navigate to="/"/>
     }
 
     return (
         <>
-            {/* <div id="login" className="container">
-                <div className="row">
-                    <div className="col-md-6 offset-md-3">
-                        <div className="login-form mx-auto">
-                            <h2 className="login-header">Đăng nhập</h2>
-                            <div className="form-group">
-                                <label htmlFor="email">Email/Phone</label>
-                                <input type="text" className="form-control mt-2" id="email" />
-                                <div className="divider-nospace"></div>
-                            </div>
-                            <div className="mt-4"></div>
-                            <div className="form-group password-field">
-                                <label htmlFor="password">Mật khẩu</label>
-                                <div className="password-field-input">
-                                    <input type="password" placeholder="Ít nhất 3 kí tự" className="form-control mt-2" id="password" />
-                                    <i className="password-toggle fas fa-eye-slash"></i>
-                                </div>
-                                <div className="divider-nospace"></div>
-                            </div>
-                            <div className="form-group">
-                                <div className="form-check checkbox-text">
-                                    <span>
-                                        <input type="checkbox" className="form-check-input" id="remember" />
-                                        <label className="form-check-label text-start" htmlFor="remember">
-                                            Ghi nhớ đăng nhập
-                                        </label>
-                                    </span>
-                                    <a href="#" className="register-link">Quên mật khẩu</a>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <select name="" className="form-control access-right">
-                                    <option selected disabled>Quyền đăng nhập</option>
-                                    <option>Người dùng</option>
-                                    <option>Quản trị viên</option>
-                                </select>
-                            </div>
-                            <button type="button" className="login-button">Đăng nhập</button>
-                            <div className="divider"></div>
-                            <div className="text-center">Bạn chưa có tài khoản?
-                                <span><a href="#" className="register-link">Tạo tài khoản</a></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-
             <section className="p-3 p-md-4 p-xl-5">
                 <Container id="login">
                     <Row className="d-flex justify-content-center align-items-center">
@@ -91,7 +50,7 @@ function Login() {
                                         <Col xs={12}>
                                             <Form.Label htmlFor="phone">Phone <span className="text-danger">*</span></Form.Label>
                                             <Form.Control type="phone" name="phone" id="phone" required value={userLogin.phone}
-                                            onChange={(e) => setUserLogin({...userLogin, phone: e.target.value})}/>
+                                            onChange={(e) => setUserLogin({...userLogin, phone: e.target.value})} validations={[]}/>
                                         </Col>
                                         <Col xs={12}>
                                             <Form.Label htmlFor="password">Password <span className="text-danger">*</span></Form.Label>

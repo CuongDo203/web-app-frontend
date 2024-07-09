@@ -2,6 +2,7 @@
 const initialState = {
     isAuthenticated: false,
     token: null,
+    user: null,
     userId: null,
     roleId: null
 };
@@ -13,6 +14,7 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: true,
                 token: action.payload.token,
+                user: action.payload.user,
                 userId: action.payload.user_id,
                 roleId: action.payload.role_id
             };
@@ -21,6 +23,7 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: false,
                 token: null,
+                user: null,
                 userId: null,
                 roleId: null
             };

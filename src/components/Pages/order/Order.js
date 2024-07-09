@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
 import './order.css';
-import { Form, Row, Col, FormGroup, FormLabel, FormControl, Button, Table, Image, InputGroup } from 'react-bootstrap';
+import { Form, Row, Col, FormGroup, FormLabel, FormControl, Button, Table, Image, InputGroup, Container } from 'react-bootstrap';
 import CartService from '../../../services/CartService';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsInCart, placeOrder } from '../../../actions/OrderActions';
@@ -21,6 +21,8 @@ function Order() {
         payment_method: 'cod',   //Mặc định là thanh toán khi nhận hàng COD
         shipping_method: 'express',  //Mặc định là giao hàng nhanh
     })
+
+    const {orderData} = useSelector(state => state.getProductsInCart)
 
     const cartService = new CartService()
     const cart = cartService.getCart()
@@ -43,16 +45,20 @@ function Order() {
             event.stopPropagation();
         }
         setValidated(true);
-        const orderData = {...formData}
-        orderData.user_id = parseInt(getUserId())
-        orderData.cart_items = cartItems.map(cartItem => ({
+        const data = {...formData}
+        data.user_id = parseInt(getUserId())
+        data.cart_items = cartItems.map(cartItem => ({
             product_id: cartItem.product.id,
             quantity: cartItem.quantity
         }));
-        orderData.total_money = calculateTotal()
-        dispatch(placeOrder(orderData))
+        data.total_money = calculateTotal()
+        dispatch(placeOrder(data))
         // cartService.clearCart()
-        navigate('/order-confirmation')
+        const orderId = orderData.id
+        console.log(orderId)
+        if(validated) {
+            navigate(`/order-confirmation/${orderId}`)
+        }
     };
 
     return (
@@ -64,7 +70,7 @@ function Order() {
                         <h2>Đây là trang Order</h2>
                         <p>Mọi sản phẩm trong giỏ hàng của bạn đều ở đây</p>
                     </div>
-                    <Form>
+                    <Container>
                         <Row className="justify-content-md-center">
                             <Col md={6}>
                                 <h2 className="product-header">Thông tin người nhận</h2>
@@ -167,7 +173,7 @@ function Order() {
                                 </div>
                             </Col>
                         </Row>
-                    </Form>
+                    </Container>
                 </div>
             </div>
             <Footer />
