@@ -6,7 +6,7 @@ import { Form, Row, Col, FormGroup, FormLabel, FormControl, Button, Table, Image
 import CartService from '../../../services/CartService';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsInCart, placeOrder } from '../../../actions/OrderActions';
-import { getUserId } from '../../../services/authService';
+import { getUser } from '../../../services/authService';
 import { useNavigate } from 'react-router-dom';
 
 function Order() {
@@ -46,7 +46,7 @@ function Order() {
         }
         setValidated(true);
         const data = {...formData}
-        data.user_id = parseInt(getUserId())
+        data.user_id = getUser().id;
         data.cart_items = cartItems.map(cartItem => ({
             product_id: cartItem.product.id,
             quantity: cartItem.quantity
@@ -55,7 +55,6 @@ function Order() {
         dispatch(placeOrder(data))
         // cartService.clearCart()
         const orderId = orderData.id
-        console.log(orderId)
         if(validated) {
             navigate(`/order-confirmation/${orderId}`)
         }

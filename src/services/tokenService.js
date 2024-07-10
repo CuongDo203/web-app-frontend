@@ -25,11 +25,9 @@ export const tokenVerify = () => {
         const decodedJwt = parseJwt(getToken());
         if (decodedJwt && decodedJwt.exp * 1000 < Date.now()) {
             // Token đã hết hạn
-            console.log('Token đã hết hạn');
             return false
         } else {
             // Token vẫn còn hiệu lực
-            console.log('Token vẫn còn hiệu lực');
             return true
         }
     }

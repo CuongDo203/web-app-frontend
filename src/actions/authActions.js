@@ -1,6 +1,6 @@
 import axios from '../customize/axios'
 import { setToken, removeToken } from '../services/tokenService'
-import { setUserId, removeUserId, setRoleId, removeRoleId, setUser, removeUser } from '../services/authService'
+import { setUser, removeUser } from '../services/authService'
 
 export const login = (username, password) => async (dispatch) => {
     try {

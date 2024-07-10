@@ -1,6 +1,7 @@
 import Header from "../../Header/Header"
 import Footer from "../../Footer/Footer"
 import "./home.css"
+import { FaSearch } from "react-icons/fa";
 import { Button, Card, CardText, Col, Row, Pagination, Form, FormControl, InputGroup } from "react-bootstrap"
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts, changePage, getCategories } from "../../../actions/productActions";
@@ -73,7 +74,7 @@ function Home() {
                                     </Form.Select>
                                 </Col>
                                 <Col md>
-                                    <Button variant="primary" onClick={() => searchProducts()}>Tìm kiếm</Button>
+                                    <Button variant="primary" onClick={() => searchProducts()}>Tìm kiếm <FaSearch /></Button>
                                 </Col>
                             </Row>
                         </InputGroup>

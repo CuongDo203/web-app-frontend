@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
-// import styles from './header.module.css'
+import React, { useState} from 'react'
 import './header.css'
+import { FiShoppingCart } from "react-icons/fi";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { IoHome } from "react-icons/io5";
+import { FaUserCircle } from "react-icons/fa";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { logout } from '../../actions/authActions';
+import { getUser } from '../../services/authService';
 
 function Header() {
     
-    const {user} = useSelector(state => state.auth)
+    const user = getUser()
     const dispatch = useDispatch()
     const [activeNavItem, setActiveNavItem] = useState(0)
+    const navigate = useNavigate()
 
     const handleLogout = () => {
         dispatch(logout())
@@ -21,6 +26,11 @@ function Header() {
 
     const onChangeActiveItem = (index) => {
         setActiveNavItem(index)
+    }
+
+    const switchToProfile = () => {
+        const userId = user.id
+        navigate(`/user-profile/${userId}`)
     }
 
     return (
@@ -31,21 +41,21 @@ function Header() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Link className={`nav-link ${(activeNavItem === 0) ? "isActive" : ""}`} 
-                            onClick={() => onChangeActiveItem(0)}
-                            to="/">Trang chủ</Link>
+                            onClick={() => setActiveNavItem(0)}
+                            to="/"><IoHome /> Trang chủ</Link>
                         <Link className={`nav-link ${(activeNavItem === 1) ? "isActive" : ""}`} 
-                            onClick={() => onChangeActiveItem(1)}
-                            to="/notifications">Thông báo</Link>
+                            onClick={() => setActiveNavItem(1)}
+                            to="/notifications"><IoMdNotificationsOutline /> Thông báo</Link>
                         <Link className={`nav-link ${(activeNavItem === 2) ? "isActive" : ""}`} 
-                            onClick={() => onChangeActiveItem(2)}
-                            to="/orders">Giỏ hàng</Link>
+                            onClick={() => setActiveNavItem(2)}
+                            to="/orders"><FiShoppingCart /> Giỏ hàng</Link>
                     </Nav>
                     <Nav>
                         {user === null ? (<Link className="nav-link" to="/login">Đăng nhập</Link>) : 
                         (
-                            <NavDropdown title={"user"} id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Tài khoản của tôi</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Đơn mua</NavDropdown.Item>
+                            <NavDropdown title={<FaUserCircle id='user-icon'/>} id="basic-nav-dropdown">
+                            <NavDropdown.Item onClick={() => switchToProfile()}>Tài khoản của tôi</NavDropdown.Item>
+                            <NavDropdown.Item >Đơn mua</NavDropdown.Item>
                             <NavDropdown.Item onClick={() => handleLogout()}>Đăng xuất</NavDropdown.Item>
                         </NavDropdown>
                         )}

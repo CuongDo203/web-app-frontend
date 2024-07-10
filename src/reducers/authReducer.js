@@ -1,8 +1,9 @@
+import { getUser } from "../services/authService";
 
 const initialState = {
     isAuthenticated: false,
     token: null,
-    user: null,
+    user: getUser(),
     userId: null,
     roleId: null
 };
