@@ -1,19 +1,28 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Header from '../../Header/Header'
 import Footer from '../../Footer/Footer'
 import { Container, Row, Col, Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../../actions/UpdateUserActions';
 
 function UserProfile() {
 
+  const {user} = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+
   const [formData, setFormData] = useState({
-    fullname: '',
-    email: '',
-    phone_number: '',
-    address: '',
-    note: '',
-    payment_method: 'cod',   //Mặc định là thanh toán khi nhận hàng COD
-    shipping_method: 'express',  //Mặc định là giao hàng nhanh
-})
+    fullname: user !== null ? user.fullname : '',
+    address: user !== null ? user.address : '',
+    dateOfBirth: user !== null ? user.date_of_birth : null,
+    password: '',
+    retypedPassword: ''
+  })
+
+  const onUpdateInfoClick = () => {
+    console.log('id ' ,user.id)
+    console.log(formData)
+    dispatch(updateUser(user.id, formData))
+  }
 
   return (
     <>
@@ -29,34 +38,30 @@ function UserProfile() {
             <Form>
               <FormGroup className="mb-3">
                 <FormLabel htmlFor="name">Họ và tên</FormLabel>
-                <FormControl type="text" id="name" required value={formData.fullname}
+                <FormControl type="text" id="name" value={formData.fullname}
                   onChange={(e) => setFormData({ ...formData, fullname: e.target.value })} />
               </FormGroup>
               <FormGroup className="mb-3">
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <FormControl type="email" id="email" required value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-              </FormGroup>
-              <FormGroup className="mb-3">
-                <FormLabel htmlFor="phone">Số điện thoại</FormLabel>
-                <FormControl type="text" id="phone" required value={formData.phone_number}
-                  onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })} />
-              </FormGroup>
-              <FormGroup className="mb-3">
                 <FormLabel htmlFor="address">Địa chỉ</FormLabel>
-                <FormControl type="text" id="address" required value={formData.address}
+                <FormControl type="text" id="address" value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
               </FormGroup>
               <FormGroup className="mb-3">
-                <FormLabel htmlFor="shipping_method">Ngày sinh</FormLabel>
-                <FormControl type='date'/>
+                <FormLabel htmlFor="update_date">Ngày sinh</FormLabel>
+                <FormControl type='date' id='update_date' value={formData.dateOfBirth}
+                  onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })} />
               </FormGroup>
               <FormGroup className="mb-3">
-                <FormLabel htmlFor="pasword">Mật khẩu</FormLabel>
-                <FormControl type="pasword" id="pasword" required value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                <FormLabel htmlFor="pasword">Mật khẩu hiện tại</FormLabel>
+                <FormControl type="pasword" id="pasword" required value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
               </FormGroup>
-              <Button variant='primary'>Cập nhật</Button>
+              <FormGroup className="mb-3">
+                <FormLabel htmlFor="retyped-pasword">Nhập lại mật khẩu</FormLabel>
+                <FormControl type="pasword" id="retyped-pasword" required value={formData.retypedPassword}
+                  onChange={(e) => setFormData({ ...formData, retypedPassword: e.target.value })} />
+              </FormGroup>
+              <Button variant='primary' onClick={() => onUpdateInfoClick()}>Cập nhật</Button>
 
             </Form>
           </Col>

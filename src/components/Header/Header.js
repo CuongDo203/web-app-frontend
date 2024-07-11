@@ -24,10 +24,6 @@ function Header() {
         dispatch(logout())
     }
 
-    const onChangeActiveItem = (index) => {
-        setActiveNavItem(index)
-    }
-
     const switchToProfile = () => {
         const userId = user.id
         navigate(`/user-profile/${userId}`)

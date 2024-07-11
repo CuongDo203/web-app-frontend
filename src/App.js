@@ -16,6 +16,7 @@ import OrderConfirm from "./components/Pages/OrderConfirm/OrderConfirm";
 
 import { Routes, Route } from "react-router-dom";
 import UserProfile from "./components/Pages/UserProfile/UserProfile";
+import Notifications from "./components/Pages/Notifications/Notifications";
 
 function NoMatch() {
   return (
@@ -37,7 +38,7 @@ function App() {
           <Route path="/product-detail/:productId" element={<DetailProduct />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/notifications" element={<NoMatch/>} />
+          <Route path="/notifications" element={<Notifications/>} />
           <Route path="/user-profile/:id" element={<UserProfile/>}/>
           <Route path="*" element={<NoMatch />} />
         </Routes>

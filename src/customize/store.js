@@ -5,6 +5,7 @@ import productReducer from '../reducers/productReducer';
 import detailProductReducer from '../reducers/detailProductReducer';
 import OrderReducer from '../reducers/OrderReducer';
 import OrderConfirmReducer from '../reducers/OrderConfirmReducer';
+import updateUserReducer from '../reducers/UpdateUserReducer';
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         getProducts: productReducer,
         getDetailProduct: detailProductReducer,
         getProductsInCart: OrderReducer,
-        getOrderDetail: OrderConfirmReducer
+        getOrderDetail: OrderConfirmReducer,
+        updateUser: updateUserReducer
     }
 });
 
