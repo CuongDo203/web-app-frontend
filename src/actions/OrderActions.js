@@ -3,7 +3,6 @@ import axios from '../customize/axios'
 export const getProductsInCart = (cart) => async (dispatch) => {
     try {
         const productIds = Array.from(cart.keys())
-        console.log(productIds)
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/by-ids`, {
             params: {ids: productIds.join(',')}
         })
@@ -34,5 +33,6 @@ export const placeOrder = (formData) => async (dispatch) => {
     }
     catch (err) {
         console.log(err)
+        alert('Đặt hàng thất bại')
     }
 }

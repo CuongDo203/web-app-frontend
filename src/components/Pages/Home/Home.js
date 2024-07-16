@@ -10,12 +10,13 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { getDetailProduct } from '../../../actions/detailProductAction'
 import { tokenVerify } from "../../../services/tokenService";
 
+
 function Home() {
 
     const { categories, products, totalPages, currentPage, visiblePages, limitPerPages, keyword, categoryId } = useSelector(
         (state) => state.getProducts
     );
-    const {isAuthenticated} = useSelector((state) => state.auth);
+    const {user} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     const navigate = useNavigate() 
@@ -47,6 +48,10 @@ function Home() {
 
     if(!tokenVerify()) {
         return <Navigate to="/login" />;
+    }
+
+    if(user.role.name === "admin") {
+        return <Navigate to="/admin"/>
     }
 
     return (
@@ -98,10 +103,6 @@ function Home() {
                                         <CardText className="product-price">
                                             Giá: ${product.price}
                                         </CardText>
-                                        {/* <div className="product-actions">
-                                            <Button variant="primary">Thêm vào giỏ hàng</Button>
-                                            <Button variant="success">Mua ngay</Button>
-                                        </div> */}
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -111,14 +112,14 @@ function Home() {
             </div>
             <div className="d-flex justify-content-center mt-5">
                 <Pagination>
-                    <Pagination.First onClick={() => onPageChange(0)} />
+                    <Pagination.First disabled={currentPage === 0} onClick={() => onPageChange(0)} />
                     <Pagination.Prev disabled={currentPage === 0} onClick={() => onPageChange(currentPage - 1)} />
                     {visiblePages.map((page, idx) => (
                         <Pagination.Item key={idx} active={page === currentPage} onClick={() => onPageChange(page)}>{page + 1}</Pagination.Item>
                     ))}
                     <Pagination.Ellipsis disabled />
-                    <Pagination.Next disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage + 1)} />
-                    <Pagination.Last onClick={() => onPageChange(totalPages - 1)} />
+                    <Pagination.Next disabled={currentPage === totalPages-1} onClick={() => onPageChange(currentPage + 1)} />
+                    <Pagination.Last disabled={currentPage === totalPages-1} onClick={() => onPageChange(totalPages - 1)} />
                 </Pagination>
             </div>
             <Footer />

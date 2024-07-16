@@ -6,6 +6,7 @@ import detailProductReducer from '../reducers/detailProductReducer';
 import OrderReducer from '../reducers/OrderReducer';
 import OrderConfirmReducer from '../reducers/OrderConfirmReducer';
 import updateUserReducer from '../reducers/UpdateUserReducer';
+import { OrderAdminReducer } from '../reducers/AdminReducer';
 
 const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
         getDetailProduct: detailProductReducer,
         getProductsInCart: OrderReducer,
         getOrderDetail: OrderConfirmReducer,
-        updateUser: updateUserReducer
+        updateUser: updateUserReducer,
+        orderAdminReducer: OrderAdminReducer
     }
 });
 

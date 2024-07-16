@@ -1,0 +1,62 @@
+.admin-page {
+    background-color: rgb(218, 214, 214);
+    height: 100vh;
+}
+
+.admin-page .sidebar {
+    height: 100vh;
+    overflow-y: auto;
+    /* width: 220px; */
+    background-color: azure;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#side-menu {
+    list-style-type: none;
+    padding-left: 0;
+    text-transform: uppercase;
+}
+
+#side-menu .nav-header {
+    padding: 20px 0;
+}
+
+#side-menu li {
+    border-bottom: 2px solid rgba(40, 38, 38, 0.2);
+}
+
+#side-menu a {
+    padding: 20px 0;
+    display: block;
+    margin-left: 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+#side-menu li:not(.nav-header):hover {
+    background-color: antiquewhite;
+}
+
+.nav-header h2 {
+    margin-left: 20px;
+}
+
+.dashboard-header {
+    background-color: rgb(162, 239, 239);
+    padding: 10px 5px;
+    align-items: center;
+    
+}
+
+.admin-page .notification-col button{
+    background-color: transparent;
+    border: none;
+    color: black;
+}
+
+/* Orders page */
+#admin-page-wrapper .content table {
+    background-color: transparent;
+}

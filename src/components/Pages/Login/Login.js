@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './login.css'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import { Link, useNavigate, Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../actions/authActions'
 
@@ -12,23 +12,19 @@ function Login() {
         password: ''
     })
 
-    const {isAuthenticated} = useSelector((state) => state.auth)
+    const {isAuthenticated, user} = useSelector((state) => state.auth)
     const dispatch = useDispatch();
 
-    const navigate = useNavigate()
-
-    
-    
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(login(userLogin.phone, userLogin.password))
-        // if(isAuthenticated) {
-        //     navigate("/")
-        // }
     }
 
     if(isAuthenticated) {
-        return <Navigate to="/"/>
+        if(user.role.name === "user")
+            return <Navigate to="/"/>
+        else    
+            return <Navigate to="/admin"/>
     }
 
     return (

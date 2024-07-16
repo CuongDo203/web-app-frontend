@@ -55,7 +55,7 @@ const productReducer = (state = initialState, action) => {
     }
 }
 
-function generateVisiblePageArray(currentPage, totalPages) {
+export function generateVisiblePageArray(currentPage, totalPages) {
     const maxVisiblePages = 5
     const halfVisiblePages = Math.floor(maxVisiblePages/2)
 
