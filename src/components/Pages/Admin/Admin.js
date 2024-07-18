@@ -1,6 +1,6 @@
 import React from 'react'
 import './Admin.css'
-import { NavDropdown, Container, Nav, Row, Col } from 'react-bootstrap'
+import { NavDropdown, Container, Nav, Row, Col, NavItem } from 'react-bootstrap'
 import { FaUserCircle } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { AiFillProduct } from "react-icons/ai";
@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../../actions/authActions';
 import { useNavigate, Navigate, Outlet } from 'react-router-dom';
 import { tokenVerify } from '../../../services/tokenService';
+
 
 function Admin() {
 
@@ -65,8 +66,8 @@ function Admin() {
                         </ul>
 
                     </div>
-                    <div class="dropdown open">
-                        <a
+                    <div className="dropdown open">
+                        <NavItem
                             className="btn border-none dropdown-toggle text-white"
                             type="button"
                             id="triggerId"
@@ -76,11 +77,11 @@ function Admin() {
                         >
                             <i className='bi bi-person f5-4'><FaUserCircle id='user-icon' /></i>
                             <span className='fs-5 ms-3 d-none d-sm-inline'>Admin</span>
-                        </a>
+                        </NavItem>
 
                         <div className="dropdown-menu" aria-labelledby="triggerId">
                             <NavDropdown.Item className="dropdown-item" href="#">
-                                <ImProfile style={{ marginRight: "5px" }}/>
+                                <ImProfile style={{ marginRight: "5px" }} />
                                 Profile
                             </NavDropdown.Item>
                             <NavDropdown.Item className="dropdown-item" onClick={() => handleLogout()}>
@@ -99,6 +100,7 @@ function Admin() {
                     </div>
                 </Col>
             </Row>
+            
         </Container>
     )
 }

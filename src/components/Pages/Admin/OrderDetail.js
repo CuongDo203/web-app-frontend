@@ -28,7 +28,7 @@ function OrderDetail() {
           <p><strong>Note: {order.note}</strong></p>
           <p><strong>Order Date: {order.order_date}</strong></p>
           <div className='form-group order-status'>
-            <label for="statusSelect"><strong>Status: </strong></label>
+            <label htmlFor="statusSelect"><strong>Status: </strong></label>
             <select className='form-control' id='statusSelect' value={order.status}>
               <option value="pending">Pending</option>
               <option value="processing">Processing</option>

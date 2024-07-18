@@ -69,6 +69,16 @@ export const OrderAdminReducer = (state = orderState, action) => {
                 ...state,
                 error: action.payload
             }
+        case 'DELETE_ORDER_SUCCESSFULLY':
+            return {
+                ...state,
+                isDeleted: true
+            }
+        case 'DELETE_ORDER_FAILED':
+            return {
+                ...state,
+                isDeleted: false
+            }
         default:
             return state
     }

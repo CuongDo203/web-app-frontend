@@ -34,10 +34,14 @@ export const getOrderById = (id) => async (dispatch) => {
 
 export const deleteOrderById = (id) => async (dispatch) => {
     try{
-        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`)
+        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`, {
+            responseType: "text"
+        })
+        dispatch({type: 'DELETE_ORDER_SUCCESSFULLY'})
     }
     catch(err) {
         console.log(err)
+        dispatch({type: 'DELETE_ORDER_FAILED'})
     }
 }
 

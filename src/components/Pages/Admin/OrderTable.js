@@ -5,13 +5,15 @@ import { Table, Pagination, Spinner, Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrder, changePage, deleteOrderById } from '../../../actions/AdminActions';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function OrderTable() {
 
-    const { isLoading, currentOrderPage, 
-        limitOrderPerPages, keyword, visiblePages, orders, totalOrderPages 
+    const { isLoading, currentOrderPage, limitOrderPerPages, keyword, 
+        visiblePages, orders, totalOrderPages
     } = useSelector(state => state.orderAdminReducer);
-    const [idToDelete, setIdToDelete] = useState(null)
+    const [idToDelete, setIdToDelete] = useState(null);
+    const [isDeleted, setIsDeleted] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,8 +26,19 @@ function OrderTable() {
     }
     
     const handleDeleteOrder = () => {
-        dispatch(deleteOrderById(idToDelete));
-        setShow(false)
+        // dispatch(deleteOrderById(idToDelete));
+        // setShow(false);
+        dispatch(deleteOrderById(idToDelete))
+        .then(() => {
+            setIsDeleted(true);
+            dispatch(getAllOrder(keyword, currentOrderPage, limitOrderPerPages))
+            setShow(false);
+        })
+        .catch(error => {
+            console.error("Failed to delete order:", error);
+            setIsDeleted(false)
+        });
+        
     }
 
     const onPageChange = (page) => {
@@ -36,7 +49,7 @@ function OrderTable() {
         navigate(`/admin/order/${id}`);
     }
 
-    useEffect(() => {
+    useEffect(() => {  
         dispatch(getAllOrder(keyword, currentOrderPage, limitOrderPerPages))
     }, [currentOrderPage, limitOrderPerPages, keyword, dispatch])
 

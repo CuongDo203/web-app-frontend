@@ -23,6 +23,8 @@ import OrderDetail from "./components/Pages/Admin/OrderDetail";
 import OrderTable from "./components/Pages/Admin/OrderTable";
 import ProductTable from "./components/Pages/Admin/ProductTable";
 import CategoryTable from "./components/Pages/Admin/CategoryTable";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function NoMatch() {
   return (
@@ -64,15 +66,27 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/user-profile/:id" element={<UserProfile />} />
-        <Route path="/admin" element={<Admin/>} >
-          <Route path="order" element={<OrderTable/>}/>
-          <Route path="order/:id" element={<OrderDetail/>}/>
-          <Route path="product" element={<ProductTable/>}/>
-          <Route path="category" element={<CategoryTable/>}/>
+        <Route path="/admin" element={<Admin />} >
+          <Route path="order" element={<OrderTable />} />
+          <Route path="order/:id" element={<OrderDetail />} />
+          <Route path="product" element={<ProductTable />} />
+          <Route path="category" element={<CategoryTable />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
         <Route path="*" element={<NoMatch />} />
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }
