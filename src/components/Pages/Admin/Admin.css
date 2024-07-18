@@ -37,6 +37,7 @@
 
 #side-menu li:not(.nav-header):hover {
     background-color: antiquewhite;
+    cursor: pointer;
 }
 
 .nav-header h2 {
@@ -57,6 +58,26 @@
 }
 
 /* Orders page */
+
+.hide {
+    display: none;
+}
+
 #admin-page-wrapper .content table {
     background-color: transparent;
+}
+
+#admin-page-wrapper .order-table tr td:last-child {
+    display: flex;
+}
+
+.order-table .delete-button:hover,
+.order-table .detail-button:hover {
+    background-color: rgb(157, 157, 202);
+    cursor: pointer;
+}
+
+/* order-admin-detail page */
+.order-admin-detail {
+    color: black;
 }

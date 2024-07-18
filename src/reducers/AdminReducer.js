@@ -1,13 +1,27 @@
 import { generateVisiblePageArray } from "./productReducer"
 
 const orderState = {
-    totalPages: 0,
-    currentPage: 0,
-    limitPerPages: 5,
+    totalOrderPages: 0,
+    currentOrderPage: 0,
+    limitOrderPerPages: 5,
     keyword: '',
     visiblePages: [],
     isLoading: false,
-    orders: []
+    orders: [],
+    order: {
+        id: null,
+        user_id: null,
+        status: '',
+        fullname: '',
+        phone_number: '',
+        email: '',
+        address: '',
+        note: '',
+        order_date: null,
+        total_money: 0,
+        order_details: []
+    },
+    isDeleted: false
 }
 
 export const OrderAdminReducer = (state = orderState, action) => {
@@ -21,9 +35,9 @@ export const OrderAdminReducer = (state = orderState, action) => {
             return {
                 ...state,
                 orders: action.payload.orders,
-                totalPages: action.payload.totalPages,
-                currentPage: action.payload.page,
-                visiblePages: generateVisiblePageArray(state.currentPage, action.payload.totalPages),
+                totalOrderPages: action.payload.totalPages,
+                currentOrderPage: action.payload.page,
+                visiblePages: generateVisiblePageArray(state.currentOrderPage, action.payload.totalPages),
                 keyword: action.payload.keyword,
                 isLoading: false
             }
@@ -31,7 +45,7 @@ export const OrderAdminReducer = (state = orderState, action) => {
             return {
                 ...state,
                 orders: [],
-                totalPages: 0,
+                totalOrderPages: 0,
                 visiblePages: [],
                 isLoading: false,
                 error: action.payload
@@ -39,8 +53,21 @@ export const OrderAdminReducer = (state = orderState, action) => {
         case 'CHANGE_PAGE':
             return {
                 ...state,
-                currentPage: action.payload,
-                visiblePages: generateVisiblePageArray(action.payload, state.totalPages)
+                currentOrderPage: action.payload,
+                visiblePages: generateVisiblePageArray(action.payload, state.totalOrderPages)
+            }
+        case 'GET_ORDER_BY_ID_SUCCESSFULLY':
+            return {
+                ...state,
+                order: {
+                    ...state.order,
+                    ...(action.payload)
+                }
+            }
+        case 'GET_ORDER_BY_ID_FAILED':
+            return {
+                ...state,
+                error: action.payload
             }
         default:
             return state

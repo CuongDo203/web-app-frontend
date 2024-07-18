@@ -1,67 +1,100 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Admin.css'
-import { NavDropdown, Container, Row, Col, Button } from 'react-bootstrap'
-import { IoNotificationsOutline } from "react-icons/io5";
+import { NavDropdown, Container, Nav, Row, Col } from 'react-bootstrap'
 import { FaUserCircle } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import OrderTable from './OrderTable';
-import ProductTable from './ProductTable'
-import CategoryTable from './CategoryTable'
-
+import { AiFillProduct } from "react-icons/ai";
+import { BsCartCheckFill } from "react-icons/bs";
+import { FaCreditCard } from "react-icons/fa6";
+import { ImProfile } from "react-icons/im";
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../actions/authActions';
+import { useNavigate, Navigate, Outlet } from 'react-router-dom';
+import { tokenVerify } from '../../../services/tokenService';
 
 function Admin() {
 
-    const [showPage, setShowPage] = useState("order")
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const renderContent = () => {
-        switch (showPage) {
-            case "product":
-                return <ProductTable />;
-            case "category":
-                return <CategoryTable />;
-            default:
-                return <OrderTable />;
-        }
-    };
+    const handleLogout = () => {
+        dispatch(logout())
+        navigate('/login')
+    }
+
+    const handleTabClick = (tab) => {
+        navigate(`/admin/${tab}`)
+    }
+
+    if (!tokenVerify()) {
+        return <Navigate to="/login" />;
+    }
 
     return (
         <Container fluid className='admin-page'>
             <Row>
-                <Col md lg="2" className='sidebar'>
-                    <div className='sidebar-collapse'>
-                        <ul id='side-menu'>
-                            <li className='nav-header'>
-                                <h2>Admin</h2>
+
+                <div className='col-auto col-sm-2 bg-dark d-flex flex-column justify-content-between min-vh-100 '>
+                    <div className='mt-2'>
+                        <Nav.Link className='text-decoration-none ms-4 d-flex align-items-center text-white d-none d-sm-inline' role='button'>
+                            <span className='f5-4'>Side Menu</span>
+                        </Nav.Link>
+                        <hr className='text-white d-none d-sm-block'></hr>
+                        <ul className="nav nav-pills flex-column mt-2 mt-sm-0">
+                            <li className="nav-item my-1 py-2 py-sm-0">
+                                <Nav.Link className="nav-link text-white text-start text-small-start" aria-current="page"
+                                    onClick={() => handleTabClick("order")}>
+                                    <i ><BsCartCheckFill /></i>
+                                    <span className='ms-2 d-none d-sm-inline'>Orders</span>
+                                </Nav.Link>
                             </li>
-                            <li>
-                                <a onClick={() => setShowPage("order")}>Orders</a>
+                            <li className="nav-item my-1 py-2 py-sm-0">
+                                <Nav.Link className="nav-link text-white text-start text-small-start" aria-current="page"
+                                    onClick={() => handleTabClick("product")}>
+                                    <i ><FaCreditCard /></i>
+                                    <span className='ms-2 d-none d-sm-inline'>Products</span>
+                                </Nav.Link>
                             </li>
-                            <li>
-                                <a onClick={() => setShowPage("category")}>Categories</a>
-                            </li>
-                            <li>
-                                <a onClick={() => setShowPage("product")}>Products</a>
+                            <li className="nav-item my-1 py-2 py-sm-0">
+                                <Nav.Link className="nav-link text-white text-start text-small-start" aria-current="page"
+                                    onClick={() => handleTabClick("category")}>
+                                    <i ><AiFillProduct /></i>
+                                    <span className='ms-2 d-none d-sm-inline'>Categories</span>
+                                </Nav.Link>
                             </li>
                         </ul>
+
                     </div>
-                </Col>
+                    <div class="dropdown open">
+                        <a
+                            className="btn border-none dropdown-toggle text-white"
+                            type="button"
+                            id="triggerId"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <i className='bi bi-person f5-4'><FaUserCircle id='user-icon' /></i>
+                            <span className='fs-5 ms-3 d-none d-sm-inline'>Admin</span>
+                        </a>
+
+                        <div className="dropdown-menu" aria-labelledby="triggerId">
+                            <NavDropdown.Item className="dropdown-item" href="#">
+                                <ImProfile style={{ marginRight: "5px" }}/>
+                                Profile
+                            </NavDropdown.Item>
+                            <NavDropdown.Item className="dropdown-item" onClick={() => handleLogout()}>
+                                <RiLogoutBoxRLine style={{ marginRight: "5px" }} />
+                                Logout
+                            </NavDropdown.Item>
+                        </div>
+                    </div>
+
+                </div>
                 <Col >
                     <div id='admin-page-wrapper'>
-                        <Row className='dashboard-header'>
-                            <Col lg={10}>
-                                <h3>Welcome back, Admin!</h3>
-                            </Col>
-                            <Col lg={1} className='notification-col'>
-                                <Button size='lg'><IoNotificationsOutline /></Button>
-                            </Col>
-                            <Col lg={1}>
-                                <NavDropdown size='lg' title={<FaUserCircle id='user-icon' />} id="basic-nav-dropdown">
-                                    <NavDropdown.Item><RiLogoutBoxRLine style={{ marginRight: "5px" }} />Logout</NavDropdown.Item>
-                                </NavDropdown>
-                            </Col>
-                        </Row>
                         <Row className='content'>
-                            {renderContent()}
+                            <Outlet />
                         </Row>
                     </div>
                 </Col>

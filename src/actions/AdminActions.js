@@ -7,7 +7,6 @@ export const getAllOrder = (keyword = "", page, limit) => async (dispatch) => {
             params: {page, limit, keyword},
         })
         const data = response.data
-        console.log(data)
         dispatch({type: 'GET_ORDERS_SUCCESSFULLY', payload: {
             orders: data.orders,
             totalPages: data.totalPages,
@@ -18,6 +17,27 @@ export const getAllOrder = (keyword = "", page, limit) => async (dispatch) => {
     catch(err) {
         console.log(err)
         dispatch({type: 'GET_ORDERS_FAILED', payload: err.message})
+    }
+}
+
+export const getOrderById = (id) => async (dispatch) => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`);
+        const data = response.data
+        dispatch({type: 'GET_ORDER_BY_ID_SUCCESSFULLY', payload: data})
+    }
+    catch (err) {
+        console.log(err)
+        dispatch({type: 'GET_ORDER_BY_ID_FAILED', payload: err.message})
+    }
+}
+
+export const deleteOrderById = (id) => async (dispatch) => {
+    try{
+        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`)
+    }
+    catch(err) {
+        console.log(err)
     }
 }
 
