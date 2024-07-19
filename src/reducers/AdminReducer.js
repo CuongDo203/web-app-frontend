@@ -21,7 +21,8 @@ const orderState = {
         total_money: 0,
         order_details: []
     },
-    isDeleted: false
+    isDeleted: false,
+    isUpdateStatusSuccessfully: false
 }
 
 export const OrderAdminReducer = (state = orderState, action) => {
@@ -79,6 +80,20 @@ export const OrderAdminReducer = (state = orderState, action) => {
                 ...state,
                 isDeleted: false
             }
+        case 'UPDATE_ORDER_SUCCESSFULLY':
+            return {
+                ...state,
+                order: {
+                    ...state.order,
+                    status: action.payload
+                },
+                isUpdateStatusSuccessfully: true
+            }
+        case 'UPDATE_ORDER_FAILED':
+            return {
+                ...state,
+                isUpdateStatusSuccessfully: false
+            }
         default:
             return state
     }
@@ -86,7 +101,7 @@ export const OrderAdminReducer = (state = orderState, action) => {
 
 export const changePage = (page) => async (dispatch) => {
     try {
-        await dispatch({type: 'CHANGE_PAGE', payload: page})
+        await dispatch({ type: 'CHANGE_PAGE', payload: page })
     }
     catch (err) {
         console.log(err)

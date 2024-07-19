@@ -1,19 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getOrderById } from '../../../actions/AdminActions';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getOrderById, resetUpdateStatus, updateOrderStatus } from '../../../actions/AdminActions';
+import { toast } from 'react-toastify';
 
 function OrderDetail() {
 
   const { id } = useParams();
   const { order } = useSelector(state => state.orderAdminReducer);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
+  
   useEffect(() => {
     dispatch(getOrderById(id))
   }, [id, dispatch])
+  
+  const [orderStatus, setOrderStatus] = useState(order.status);
 
+  const handleUpdateOrderStatus = () => {
+    dispatch(updateOrderStatus({...order, status: orderStatus}))
+    .then(() => {
+      dispatch(resetUpdateStatus())
+      navigate('/admin/order')
+      toast.success('Update order successfully!')
+    })
+    .catch(err => {
+      toast.error('Update order failed!')
+      console.log(err)
+    })
+  }
+  
   return (
     <div className='container order-admin-detail'>
       <div className='row'>
@@ -29,7 +46,8 @@ function OrderDetail() {
           <p><strong>Order Date: {order.order_date}</strong></p>
           <div className='form-group order-status'>
             <label htmlFor="statusSelect"><strong>Status: </strong></label>
-            <select className='form-control' id='statusSelect' value={order.status}>
+            <select className='form-control' id='statusSelect' value={orderStatus}
+              onChange={(e) => setOrderStatus(e.target.value)}>
               <option value="pending">Pending</option>
               <option value="processing">Processing</option>
               <option value="shipped">Shipped</option>
@@ -62,7 +80,7 @@ function OrderDetail() {
             </tr> */}
           </tbody>
         </Table>
-        <Button variant='primary' className='col-md-2'>Save</Button>
+        <Button variant='primary' className='col-md-2' onClick={() => handleUpdateOrderStatus()}>Save</Button>
       </div>
     </div>
   )

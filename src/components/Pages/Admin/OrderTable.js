@@ -3,17 +3,15 @@ import { MdDelete } from "react-icons/md";
 import { MdReadMore } from "react-icons/md";
 import { Table, Pagination, Spinner, Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrder, changePage, deleteOrderById } from '../../../actions/AdminActions';
+import { getAllOrder, changePage, deleteOrderById, resetDeleteStatus } from '../../../actions/AdminActions';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 function OrderTable() {
 
-    const { isLoading, currentOrderPage, limitOrderPerPages, keyword, 
-        visiblePages, orders, totalOrderPages
+    const { isLoading, currentOrderPage, limitOrderPerPages, keyword,
+        visiblePages, orders, totalOrderPages, isUpdateStatusSuccessfully, isDeleted
     } = useSelector(state => state.orderAdminReducer);
     const [idToDelete, setIdToDelete] = useState(null);
-    const [isDeleted, setIsDeleted] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,21 +22,19 @@ function OrderTable() {
         setShow(true);
         setIdToDelete(id)
     }
-    
+
     const handleDeleteOrder = () => {
         // dispatch(deleteOrderById(idToDelete));
         // setShow(false);
         dispatch(deleteOrderById(idToDelete))
-        .then(() => {
-            setIsDeleted(true);
-            dispatch(getAllOrder(keyword, currentOrderPage, limitOrderPerPages))
-            setShow(false);
-        })
-        .catch(error => {
-            console.error("Failed to delete order:", error);
-            setIsDeleted(false)
-        });
-        
+            .then(() => {
+                dispatch(resetDeleteStatus())
+                setShow(false);
+            })
+            .catch(error => {
+                console.error("Failed to delete order:", error);
+            });
+
     }
 
     const onPageChange = (page) => {
@@ -49,9 +45,9 @@ function OrderTable() {
         navigate(`/admin/order/${id}`);
     }
 
-    useEffect(() => {  
+    useEffect(() => {
         dispatch(getAllOrder(keyword, currentOrderPage, limitOrderPerPages))
-    }, [currentOrderPage, limitOrderPerPages, keyword, dispatch])
+    }, [currentOrderPage, limitOrderPerPages, keyword, dispatch, isUpdateStatusSuccessfully, isDeleted])
 
     return (
         <div className='order-table'>
@@ -100,21 +96,21 @@ function OrderTable() {
                         </>
                     )}
                 </tbody>
-                <Modal show={show} onHide={handleClose} centered={true}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Confirm deletion</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Do you really want to delete this order?</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={handleDeleteOrder}>
-                            Delete
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
             </Table>
+            <Modal show={show} onHide={handleClose} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm deletion</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Do you really want to delete this order?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleDeleteOrder}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <Pagination className="d-flex justify-content-center mt-5">
                 <Pagination.First disabled={currentOrderPage === 0} onClick={() => onPageChange(0)} />
                 <Pagination.Prev disabled={currentOrderPage === 0} onClick={() => onPageChange(currentOrderPage - 1)} />

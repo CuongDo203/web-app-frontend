@@ -32,6 +32,17 @@ export const getOrderById = (id) => async (dispatch) => {
     }
 }
 
+export const updateOrderStatus = (orderDTO) => async (dispatch) => {
+    try {
+        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/orders/${orderDTO.id}`, orderDTO)
+        dispatch({type: 'UPDATE_ORDER_SUCCESSFULLY', payload: orderDTO.status})
+    }
+    catch(err) {
+        console.log(err)
+        dispatch({type: 'UPDATE_ORDER_FAILED'})
+    }
+}
+
 export const deleteOrderById = (id) => async (dispatch) => {
     try{
         await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`, {
@@ -43,6 +54,14 @@ export const deleteOrderById = (id) => async (dispatch) => {
         console.log(err)
         dispatch({type: 'DELETE_ORDER_FAILED'})
     }
+}
+
+export const resetUpdateStatus = () => (dispatch) => {
+    dispatch({type: 'UPDATE_ORDER_FAILED'})
+}
+
+export const resetDeleteStatus = () => (dispatch) => {
+    dispatch({type: 'DELETE_ORDER_FAILED'})
 }
 
 export const changePage = (page) => async (dispatch) => {
