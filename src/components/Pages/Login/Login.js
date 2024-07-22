@@ -3,7 +3,8 @@ import './login.css'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../../actions/authActions'
+import { login } from '../../../actions/authActions';
+import CartService from '../../../services/CartService';
 
 function Login() {
 
@@ -14,10 +15,18 @@ function Login() {
 
     const {isAuthenticated, user} = useSelector((state) => state.auth)
     const dispatch = useDispatch();
+    const cartService = new CartService()
+    // const cart = cartService.getCart()
 
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(login(userLogin.phone, userLogin.password))
+        // .then(()=>{
+        //     cartService.refreshCart()
+        // })
+        // .catch((err) => {
+        //     console.log(err)
+        // })
     }
 
     if(isAuthenticated) {

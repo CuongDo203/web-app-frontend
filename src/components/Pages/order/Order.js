@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
 import './order.css';
-import { Form, Row, Col, FormGroup, FormLabel, FormControl, Button, Table, Image, InputGroup, Container } from 'react-bootstrap';
+import { Form, Row, Col, FormGroup, FormLabel, FormControl, Button, Table, Image, 
+    InputGroup, Container, Modal } from 'react-bootstrap';
 import CartService from '../../../services/CartService';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsInCart, placeOrder } from '../../../actions/OrderActions';
 import { getUser } from '../../../services/authService';
 import { useNavigate } from 'react-router-dom';
+import { ImBin2 } from "react-icons/im";
 
 function Order() {
 
@@ -22,7 +24,17 @@ function Order() {
         shipping_method: 'express',  //Mặc định là giao hàng nhanh
     })
 
-    const {orderData} = useSelector(state => state.getProductsInCart)
+    const { orderData } = useSelector(state => state.getProductsInCart)
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = (id) => {
+        setShow(true)
+        setProductIdToDelete(id)
+    };
+
+    const [productIdToDelete, setProductIdToDelete] = useState(null)
 
     const cartService = new CartService()
     const cart = cartService.getCart()
@@ -34,9 +46,23 @@ function Order() {
         return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0).toFixed(2)
     }
 
+    const handleDeleteItemInCart = () => {
+        cartService.removeFromCart(productIdToDelete)
+        setShow(false)
+        setProductIdToDelete(null)
+    }
+
+    const updateCartFromCartItem = () => {
+        cart.clear()
+        cartItems.forEach((item) => {
+            cart.set(item.product.id, item.quantity)
+        })
+        cartService.setCart(cart)
+    }
+
     useEffect(() => {
         dispatch(getProductsInCart(cart))
-    }, [dispatch, cart])
+    }, [dispatch, cart, productIdToDelete])
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
@@ -45,7 +71,7 @@ function Order() {
             event.stopPropagation();
         }
         setValidated(true);
-        const data = {...formData}
+        const data = { ...formData }
         data.user_id = getUser().id;
         data.cart_items = cartItems.map(cartItem => ({
             product_id: cartItem.product.id,
@@ -53,9 +79,9 @@ function Order() {
         }));
         data.total_money = calculateTotal()
         dispatch(placeOrder(data))
-        // cartService.clearCart()
+        cartService.clearCart()
         const orderId = orderData.id
-        if(validated) {
+        if (validated) {
             navigate(`/order-confirmation/${orderId}`)
         }
     };
@@ -71,13 +97,13 @@ function Order() {
                     </div>
                     <Container>
                         <Row className="justify-content-md-center">
-                            <Col md={6}>
+                            <Col md={5}>
                                 <h2 className="product-header">Thông tin người nhận</h2>
                                 <Form noValidate validated={validated}>
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="name">Họ và tên</FormLabel>
-                                        <FormControl type="text" id="name" required value={formData.fullname} 
-                                            onChange={(e) => setFormData({...formData, fullname: e.target.value})} />
+                                        <FormControl type="text" id="name" required value={formData.fullname}
+                                            onChange={(e) => setFormData({ ...formData, fullname: e.target.value })} />
                                         <Form.Control.Feedback type="invalid">
                                             Vui lòng điền đầy đủ họ tên!
                                         </Form.Control.Feedback>
@@ -85,7 +111,7 @@ function Order() {
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="email">Email</FormLabel>
                                         <FormControl type="email" id="email" required value={formData.email}
-                                            onChange={(e) => setFormData({...formData, email: e.target.value})}/>
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                                         <Form.Control.Feedback type="invalid">
                                             Vui lòng nhập đúng định dạng email!
                                         </Form.Control.Feedback>
@@ -93,7 +119,7 @@ function Order() {
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="phone">Số điện thoại</FormLabel>
                                         <FormControl type="text" id="phone" required value={formData.phone_number}
-                                            onChange={(e) => setFormData({...formData, phone_number: e.target.value})}/>
+                                            onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })} />
                                         <Form.Control.Feedback type="invalid">
                                             Vui lòng điền đầy đủ số điện thoại!
                                         </Form.Control.Feedback>
@@ -101,28 +127,28 @@ function Order() {
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="address">Địa chỉ</FormLabel>
                                         <FormControl type="text" id="address" required value={formData.address}
-                                            onChange={(e) => setFormData({...formData, address: e.target.value})}/>
+                                            onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
                                         <Form.Control.Feedback type="invalid">
                                             Vui lòng nhập địa chỉ!
                                         </Form.Control.Feedback>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="note">Ghi chú</FormLabel>
-                                        <FormControl type="text" id="note" value={formData.note} 
-                                            onChange={(e) => setFormData({...formData, note: e.target.value})}/>
+                                        <FormControl type="text" id="note" value={formData.note}
+                                            onChange={(e) => setFormData({ ...formData, note: e.target.value })} />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="shipping_method">Phương thức vận chuyển</FormLabel>
-                                        <FormControl as="select" id="shipping_method" 
-                                            onChange={(e) => setFormData({...formData, shipping_method: e.target.value})}>
+                                        <FormControl as="select" id="shipping_method"
+                                            onChange={(e) => setFormData({ ...formData, shipping_method: e.target.value })}>
                                             <option value="express">Nhanh (Express)</option>
                                             <option value="normal">Thường (Normal)</option>
                                         </FormControl>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="payment_method">Phương thức thanh toán</FormLabel>
-                                        <FormControl as="select" id="payment_method" 
-                                            onChange={(e) => setFormData({...formData, payment_method: e.target.value})}>
+                                        <FormControl as="select" id="payment_method"
+                                            onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}>
                                             <option value="cod">Thanh toán khi nhận hàng (COD)</option>
                                             <option value="others">Thanh toán khác</option>
                                         </FormControl>
@@ -130,7 +156,7 @@ function Order() {
 
                                 </Form>
                             </Col>
-                            <Col md={6}>
+                            <Col md={7}>
                                 <h2 className="product-order">Sản phẩm đã đặt hàng</h2>
                                 <Table responsive="md" bordered hover variant='dark'>
                                     <thead>
@@ -139,6 +165,7 @@ function Order() {
                                             <th>Số lượng</th>
                                             <th>Đơn giá</th>
                                             <th>Tổng giá</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -153,6 +180,7 @@ function Order() {
                                                 <td>{item.quantity}</td>
                                                 <td>${item.product.price}</td>
                                                 <td>${(item.product.price * item.quantity).toFixed(2)}</td>
+                                                <td><Button variant="danger" onClick={() => handleShow(item.product.id)}><ImBin2 /> Xóa</Button></td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -172,6 +200,20 @@ function Order() {
                                 </div>
                             </Col>
                         </Row>
+                        <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Xác nhận xóa</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?</Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Hủy
+                                </Button>
+                                <Button variant="primary" onClick={() => handleDeleteItemInCart()}>
+                                    Xóa
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </Container>
                 </div>
             </div>

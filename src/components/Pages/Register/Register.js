@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Row, Col, Form, Button} from 'react-bootstrap'
 import { useState } from 'react'
 import Validations from '../../Validations'
-import axios from 'axios'
 import { register } from '../../../actions/registerActions'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,7 +22,7 @@ function Register() {
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
-        event.preventDefault()
+        // event.preventDefault()
         dispatch(register(userRegister))
         if(isRegisterSuccessfully) {
             alert('Dang ky thanh cong')

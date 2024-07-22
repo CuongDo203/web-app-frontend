@@ -4,6 +4,7 @@ import Footer from '../../Footer/Footer'
 import { Container, Row, Col, Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../../actions/UpdateUserActions';
+import './UserProfile.css'
 
 function UserProfile() {
 
@@ -27,7 +28,7 @@ function UserProfile() {
   return (
     <>
       <Header />
-      <Container>
+      <Container className='user-profile'>
         <Row >
           <Col className='text-center'>
             <h1 >Thông tin tài khoản</h1>
