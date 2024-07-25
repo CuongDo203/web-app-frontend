@@ -25,6 +25,8 @@ import ProductTable from "./components/Pages/Admin/ProductTable";
 import CategoryTable from "./components/Pages/Admin/CategoryTable";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import EmailForm from "./components/Pages/ForgetPassword/EmailForm";
+import ResetPasswordForm from "./components/Pages/ForgetPassword/ResetPasswordForm";
 
 function NoMatch() {
   return (
@@ -64,6 +66,7 @@ function App() {
         <Route path="/product-detail/:productId" element={<DetailProduct />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forget-password" element={<EmailForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/user-profile/:id" element={<UserProfile />} />
         <Route path="/admin" element={<Admin />} >
@@ -74,6 +77,8 @@ function App() {
           <Route path="*" element={<NoMatch />} />
         </Route>
         <Route path="*" element={<NoMatch />} />
+        <Route path="/user/forgot-password" element={<EmailForm />} />
+        <Route path="/user/change-password" element={<ResetPasswordForm />} />
       </Routes>
       <ToastContainer
         position="top-center"

@@ -4,7 +4,6 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../actions/authActions';
-import CartService from '../../../services/CartService';
 
 function Login() {
 
@@ -15,7 +14,7 @@ function Login() {
 
     const {isAuthenticated, user} = useSelector((state) => state.auth)
     const dispatch = useDispatch();
-    const cartService = new CartService()
+    // const cartService = new CartService()
     // const cart = cartService.getCart()
 
     const handleSubmit = (e) => {
@@ -46,7 +45,7 @@ function Login() {
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="mb-5 align-items-center">
-                                            <h3 className='text-center'>Log in</h3>
+                                            <h3 className='text-center'>LOG IN</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -77,7 +76,7 @@ function Login() {
                                         <hr className="mt-5 mb-4 border-secondary-subtle" />
                                         <div className="d-flex justify-content-between">
                                             <p className="mb-0 d-inline">Not a member yet? <Link to="/register" className="link-secondary text-decoration-none">Register now</Link></p>
-                                            <Link to="#!" className="link-secondary text-decoration-none text-end">Forgot password</Link>
+                                            <Link to="/user/forgot-password" className="link-secondary text-decoration-none text-end">Forgot password</Link>
                                         </div>
                                     </div>
                                 </div>

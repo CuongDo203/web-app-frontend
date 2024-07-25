@@ -62,6 +62,9 @@ function Order() {
 
     useEffect(() => {
         dispatch(getProductsInCart(cart))
+        return () => {
+            setProductIdToDelete(null)
+        }
     }, [dispatch, cart, productIdToDelete])
 
     const handleSubmit = (event) => {
