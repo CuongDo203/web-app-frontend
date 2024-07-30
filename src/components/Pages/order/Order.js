@@ -30,8 +30,9 @@ function Order() {
 
     const handleClose = () => setShow(false);
     const handleShow = (id) => {
-        setShow(true)
         setProductIdToDelete(id)
+        // console.log(id)
+        setShow(true)
     };
 
     const [productIdToDelete, setProductIdToDelete] = useState(null)
@@ -62,9 +63,6 @@ function Order() {
 
     useEffect(() => {
         dispatch(getProductsInCart(cart))
-        return () => {
-            setProductIdToDelete(null)
-        }
     }, [dispatch, cart, productIdToDelete])
 
     const handleSubmit = (event) => {

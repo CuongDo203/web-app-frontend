@@ -28,7 +28,8 @@ function EmailForm() {
                 <Button variant="primary" className='mt-3' onClick={() => handleSendEmail()}>
                     {isLoading ? <Spinner animation="border" size="sm" /> : 'Send'}
                 </Button>
-                <Button variant='secondary' className='mt-2' onClick={() => navigate('/login')}>Back</Button>
+                <Button variant='secondary' className='mt-2'  disabled={isLoading} 
+                    onClick={() => navigate('/login')}>Back</Button>
             </Form>
         </Container>
     )

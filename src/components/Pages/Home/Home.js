@@ -29,6 +29,10 @@ function Home() {
         dispatch(getCategories())
     }, [currentPage, limitPerPages, categoryId, keyword, dispatch])
 
+    if(!tokenVerify()) {
+        return <Navigate to="/login" />;
+    }
+
     const onPageChange = (page) => {
         dispatch(changePage(page))
     }
@@ -44,10 +48,6 @@ function Home() {
 
     const searchProducts = () => {
         dispatch(getProducts(textVal, selectedCategoryId, 0, limitPerPages))
-    }
-
-    if(!tokenVerify()) {
-        return <Navigate to="/login" />;
     }
 
     if(user.role.name === "admin") {

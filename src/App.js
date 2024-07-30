@@ -27,6 +27,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import EmailForm from "./components/Pages/ForgetPassword/EmailForm";
 import ResetPasswordForm from "./components/Pages/ForgetPassword/ResetPasswordForm";
+import OAuth2RedirectHandler from "./components/OAuth2/OAuth2RedirectHandler";
 
 function NoMatch() {
   return (
@@ -79,6 +80,7 @@ function App() {
         <Route path="*" element={<NoMatch />} />
         <Route path="/user/forgot-password" element={<EmailForm />} />
         <Route path="/user/change-password" element={<ResetPasswordForm />} />
+        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>}/>
       </Routes>
       <ToastContainer
         position="top-center"

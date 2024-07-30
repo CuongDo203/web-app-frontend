@@ -29,11 +29,10 @@ function ResetPasswordForm() {
             toast.error('Password does not match')
             return
         }
-        dispatch(changePassword(token, { pw, retypedPw }))
-        if(isChangPasswordSuccessfully) {
+        dispatch(changePassword(token, { pw, retypedPw })).then(() => {
             setPw("")
             setRetypedPw("")
-        }
+        })
     }
 
     return (
