@@ -53,7 +53,7 @@ function UserProfile() {
                   onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })} />
               </FormGroup>
               <FormGroup className="mb-3">
-                <FormLabel htmlFor="pasword">Mật khẩu hiện tại</FormLabel>
+                <FormLabel htmlFor="pasword">Mật khẩu mới</FormLabel>
                 <FormControl type="pasword" id="pasword" required value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
               </FormGroup>

@@ -32,3 +32,15 @@ export const tokenVerify = () => {
         }
     }
 }
+
+export const setRefreshToken = (refreshToken) => {
+    localStorage.setItem('refresh_token', refreshToken);
+}
+
+export const getRefreshToken = () => {
+    return localStorage.getItem('refresh_token');
+}
+
+export const removeRefreshToken = () => {
+    localStorage.removeItem('refresh_token');
+};

@@ -1,49 +1,47 @@
 import { useState } from 'react'
 import './login.css'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+import { Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../actions/authActions';
 
 function Login() {
 
     const [userLogin, setUserLogin] = useState({
-        phone: '',
+        username: '',
         password: ''
     })
 
-    const {isAuthenticated, user} = useSelector((state) => state.auth)
+    const [isShowPassword, setIsShowPassword] = useState(false)
+    const { isAuthenticated, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    // const cartService = new CartService()
-    // const cart = cartService.getCart()
+
+    const handleTogglePw = () => {
+        setIsShowPassword(!isShowPassword)
+    }
 
     const handleLoginWithGoogle = () => {
         const url = `http://localhost:8080/oauth2/authorization/google?redirect_uri=${process.env.REACT_APP_REDIRECT_URL}`;
-        window.location.href=url
+        window.location.href = url
     }
 
     const handleLoginWithFacebook = () => {
         const url = `http://localhost:8080/oauth2/authorization/facebook?redirect_uri=${process.env.REACT_APP_REDIRECT_URL}`;
-        window.location.href=url
+        window.location.href = url
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch(login(userLogin.phone, userLogin.password))
-        // .then(()=>{
-        //     cartService.refreshCart()
-        // })
-        // .catch((err) => {
-        //     console.log(err)
-        // })
+        dispatch(login(userLogin.username, userLogin.password))
     }
 
-    if(isAuthenticated) {
-        if(user.role.name === "user")
-            return <Navigate to="/"/>
-        else    
-            return <Navigate to="/admin"/>
+    if (isAuthenticated) {
+        if (user.role.name === "user")
+            return <Navigate to="/" />
+        else
+            return <Navigate to="/admin" />
     }
 
     return (
@@ -56,28 +54,38 @@ function Login() {
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="mb-5 align-items-center">
-                                            <h3 className='text-center'>LOG IN</h3>
+                                            <h3 className='text-center'>ĐĂNG NHẬP</h3>
                                         </div>
                                     </div>
                                 </div>
                                 <Form onSubmit={handleSubmit}>
                                     <Row className="gy-3 gy-md-4 overflow-hidden">
                                         <Col xs={12}>
-                                            <Form.Label htmlFor="phone">Phone <span className="text-danger">*</span></Form.Label>
-                                            <Form.Control type="phone" name="phone" id="phone" required value={userLogin.phone}
-                                            onChange={(e) => setUserLogin({...userLogin, phone: e.target.value})} validations={[]}/>
+                                            <Form.Label htmlFor="phone">Số điện thoại / Email <span className="text-danger">*</span></Form.Label>
+                                            <Form.Control type="phone" name="phone" id="phone" required value={userLogin.username}
+                                                onChange={(e) => setUserLogin({ ...userLogin, username: e.target.value })} validations={[]} />
                                         </Col>
                                         <Col xs={12}>
-                                            <Form.Label htmlFor="password">Password <span className="text-danger">*</span></Form.Label>
-                                            <Form.Control type="password" name="password" id="password" required value={userLogin.password}
-                                            onChange={(e) => setUserLogin({...userLogin, password: e.target.value})}/>
+                                            <Form.Label htmlFor="password">Mật khẩu <span className="text-danger">*</span></Form.Label>
+                                            <Form.Group className='password-field-input'>
+                                                <Form.Control 
+                                                    type={!isShowPassword ? "password" : "text"} 
+                                                    name="password" 
+                                                    id="password" 
+                                                    required 
+                                                    value={userLogin.password}
+                                                    onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })} 
+                                                />
+                                                {!isShowPassword ? <FaEyeSlash className='password-toggle' onClick={() => handleTogglePw()} /> :
+                                                    <FaEye className='password-toggle' onClick={() => handleTogglePw()} />}
+                                            </Form.Group>
                                         </Col>
                                         <Col xs={12}>
-                                            <Form.Check type="checkbox" id="remember_me" label="Keep me logged in" />
+                                            <Form.Check type="checkbox" id="remember_me" label="Keep me logged in" defaultChecked/>
                                         </Col>
                                         <Col xs={12}>
                                             <div className="d-grid">
-                                                <Button variant="primary" type="submit" onClick={() => handleSubmit}>Log in now</Button>
+                                                <Button variant="primary" type="submit" onClick={() => handleSubmit}>Đăng nhập</Button>
                                             </div>
                                         </Col>
                                     </Row>
@@ -86,14 +94,18 @@ function Login() {
                                     <div className="col-12">
                                         <hr className="mt-5 mb-4 border-secondary-subtle" />
                                         <div className="d-flex justify-content-between">
-                                            <p className="mb-0 d-inline">Not a member yet? <Link to="/register" className="link-secondary text-decoration-none">Register now</Link></p>
-                                            <Link to="/user/forgot-password" className="link-secondary text-decoration-none text-end">Forgot password</Link>
+                                            <p className="mb-0 d-inline">Chưa có tài khoản? <Link to="/register" className="link-secondary text-decoration-none">
+                                                <span className='register-link'>Đăng ký ngay</span>
+                                            </Link></p>
+                                            <Link to="/user/forgot-password" className="link-secondary text-decoration-none text-end">
+                                                <span className='forgot-password-link'>Quên mật khẩu</span>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <p className="mt-5 mb-4">Or sign in with</p>
+                                        <p className="mt-5 mb-4">Hoặc đăng nhập với</p>
                                         <div className="d-flex gap-3 flex-column flex-xl-row">
                                             <Button variant="outline-primary">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-google" viewBox="0 0 16 16">

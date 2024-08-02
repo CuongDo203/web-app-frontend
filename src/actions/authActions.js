@@ -1,16 +1,25 @@
 import axios from '../customize/axios'
-import { setToken, removeToken, getToken } from '../services/tokenService'
+import { setToken, removeToken, getToken, setRefreshToken, removeRefreshToken } from '../services/tokenService'
 import { setUser, removeUser } from '../services/authService'
 import { toast } from 'react-toastify';
 
 export const login = (username, password) => async (dispatch) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/login`, 
-            {phone_number: username, password });
-        const { token } = response.data;
+        let data= {}
+        let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(regex.test(username)) {
+            data = {
+                email: username,
+                password
+            }
+        }
+        else {
+            data = {phone_number: username, password }
+        }
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/login`, data);
+        const { token, refresh_token } = response.data;
         setToken(token);
-        // setUserId(user_id);
-        // setRoleId(role_id);
+        setRefreshToken(refresh_token)
         const userResponse = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/details`)
         const userResponseJSON = JSON.stringify(userResponse.data) 
         setUser(userResponseJSON)
@@ -29,7 +38,7 @@ export const singleSignOn = () => async (dispatch) => {
         const userResponseJSON = JSON.stringify(userResponse.data) 
         setUser(userResponseJSON)
         dispatch({ type: 'LOGIN_SUCCESS', payload: {user: userResponse.data} })
-        await toast.success('Đăng nhập thành công!')
+        toast.success('Đăng nhập thành công!')
     }
     catch (err) {
         console.log(err)
@@ -44,6 +53,7 @@ export const logout = () => async (dispatch) => {
         })
         removeToken();
         removeUser();
+        removeRefreshToken();
         document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         dispatch({ type: 'LOGOUT' });
         toast.success('Đăng xuất thành công!')
