@@ -23,6 +23,7 @@ function Header() {
 
     const handleLogout = () => {
         dispatch(logout())
+        navigate('/login')
     }
 
     const switchToProfile = () => {
@@ -45,8 +46,6 @@ function Header() {
         const newActiveNavItem = getActiveNavItem(location.pathname);
         setActiveNavItem(newActiveNavItem);
     }, [location]);
-
-    console.log(activeNavItem)
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" data-bs-theme="dark" className="bg-body-tertiary">

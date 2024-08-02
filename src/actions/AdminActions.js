@@ -7,7 +7,6 @@ export const getAllOrder = (keyword = "", page, limit) => async (dispatch) => {
             params: {page, limit, keyword},
         })
         const data = response.data
-        console.log(data)
         dispatch({type: 'GET_ORDERS_SUCCESSFULLY', payload: {
             orders: data.orders,
             totalPages: data.totalPages,
@@ -19,6 +18,50 @@ export const getAllOrder = (keyword = "", page, limit) => async (dispatch) => {
         console.log(err)
         dispatch({type: 'GET_ORDERS_FAILED', payload: err.message})
     }
+}
+
+export const getOrderById = (id) => async (dispatch) => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`);
+        const data = response.data
+        dispatch({type: 'GET_ORDER_BY_ID_SUCCESSFULLY', payload: data})
+    }
+    catch (err) {
+        console.log(err)
+        dispatch({type: 'GET_ORDER_BY_ID_FAILED', payload: err.message})
+    }
+}
+
+export const updateOrderStatus = (orderDTO) => async (dispatch) => {
+    try {
+        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/orders/${orderDTO.id}`, orderDTO)
+        dispatch({type: 'UPDATE_ORDER_SUCCESSFULLY', payload: orderDTO.status})
+    }
+    catch(err) {
+        console.log(err)
+        dispatch({type: 'UPDATE_ORDER_FAILED'})
+    }
+}
+
+export const deleteOrderById = (id) => async (dispatch) => {
+    try{
+        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`, {
+            responseType: "text"
+        })
+        dispatch({type: 'DELETE_ORDER_SUCCESSFULLY'})
+    }
+    catch(err) {
+        console.log(err)
+        dispatch({type: 'DELETE_ORDER_FAILED'})
+    }
+}
+
+export const resetUpdateStatus = () => (dispatch) => {
+    dispatch({type: 'UPDATE_ORDER_FAILED'})
+}
+
+export const resetDeleteStatus = () => (dispatch) => {
+    dispatch({type: 'DELETE_ORDER_FAILED'})
 }
 
 export const changePage = (page) => async (dispatch) => {

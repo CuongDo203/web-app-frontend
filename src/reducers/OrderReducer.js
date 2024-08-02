@@ -30,6 +30,7 @@ const OrderReducer = (state = initialState, action) => {
         case 'FETCH_PRODUCTS_BY_IDS_FAILURE':
             return {
                 ...state,
+                cartItems: [],
                 error: action.payload
             }    
         case 'PLACE_ORDER':

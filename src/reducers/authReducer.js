@@ -2,7 +2,7 @@ import { getUser } from "../services/authService";
 
 const initialState = {
     isAuthenticated: false,
-    token: null,
+    // token: null,
     user: getUser(),
 };
 
@@ -12,14 +12,14 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthenticated: true,
-                token: action.payload.token,
+                // token: action.payload.token,
                 user: action.payload.user
             };
         case 'LOGOUT':
             return {
                 ...state,
                 isAuthenticated: false,
-                token: null,
+                // token: null,
                 user: null
             };
         default:

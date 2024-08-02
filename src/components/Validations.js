@@ -1,6 +1,7 @@
 
 function Validations(values) {
     const errors = {}
+    let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!values.phone.trim()) {
         errors.phone = "Số điện thoại là bắt buộc"
     }
@@ -9,6 +10,10 @@ function Validations(values) {
     }
     else if(values.password.length<8){
         errors.password = "Mật khẩu bắt buộc phải có 8 kí tự trở lên"
+    }
+
+    if(values.email.trim().length > 0 && !regex.test(values.email)) {
+        errors.email = 'Email không đúng định dạng'
     }
 
     if(!values.retypedPassword.trim()) {

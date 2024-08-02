@@ -5,7 +5,8 @@
 #order .intro-section{
     text-align: center;
     color: #fff;
-    padding: 56px 20px 20px 20px;
+    padding: 66px 20px 20px 20px;
+    margin-top: 30px;
 }
 
 #order .product-header{
@@ -24,28 +25,36 @@
 
 #order .form-control:focus {
     border-color: #fff;
-    background-color: rgb(19, 23, 42);
+    /* background-color: rgb(19, 23, 42); */
     color: #fff;
 }
 
 #order .product-order{
     color: rgb(105, 244, 181);
+    text-align: center;
+}
+
+#order .product-info {
+    display: flex;
+    flex-direction: column;
 }
 
 #order table {
     width: 100%;
     border-radius: 10px;
-    border: none;
+    /* border: none; */
     border-collapse: separate;
-    border: 1px solid #fff;
-    border-spacing: 0;
-    background-color: rgb(12, 13, 54);
+    /* border: 1px solid #fff; */
+    /* border-spacing: 0; */
+    background-color: transparent;
 }
 
 th,
 td {
     padding: 10px;
     text-align: center;
+    align-items: center;
+    vertical-align: middle;
 }
 
 #order .product-image{

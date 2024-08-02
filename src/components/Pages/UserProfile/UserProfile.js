@@ -4,6 +4,7 @@ import Footer from '../../Footer/Footer'
 import { Container, Row, Col, Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../../actions/UpdateUserActions';
+import './UserProfile.css'
 
 function UserProfile() {
 
@@ -27,7 +28,7 @@ function UserProfile() {
   return (
     <>
       <Header />
-      <Container>
+      <Container className='user-profile'>
         <Row >
           <Col className='text-center'>
             <h1 >Thông tin tài khoản</h1>
@@ -52,7 +53,7 @@ function UserProfile() {
                   onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })} />
               </FormGroup>
               <FormGroup className="mb-3">
-                <FormLabel htmlFor="pasword">Mật khẩu hiện tại</FormLabel>
+                <FormLabel htmlFor="pasword">Mật khẩu mới</FormLabel>
                 <FormControl type="pasword" id="pasword" required value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
               </FormGroup>

@@ -38,16 +38,16 @@ const detailProductReducer = (state = initialState, action) => {
     }
 }
 
-function showImage(index) {
-    if(initialState.productImages && initialState.productImages.length > 0) {
-        if(index < 0) {
-            index = 0
-        }
-        else if(index >= initialState.productImages.length) {
-            index = initialState.productImages.length - 1
-        }
-        return index
-    }
-}
+// function showImage(index) {
+//     if(initialState.productImages && initialState.productImages.length > 0) {
+//         if(index < 0) {
+//             index = 0
+//         }
+//         else if(index >= initialState.productImages.length) {
+//             index = initialState.productImages.length - 1
+//         }
+//         return index
+//     }
+// }
 
 export default detailProductReducer

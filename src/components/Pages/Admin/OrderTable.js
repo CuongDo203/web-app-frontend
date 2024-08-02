@@ -1,24 +1,56 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdDelete } from "react-icons/md";
-import { Table, Pagination, Spinner } from 'react-bootstrap';
+import { MdReadMore } from "react-icons/md";
+import { Table, Pagination, Spinner, Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrder, changePage } from '../../../actions/AdminActions';
+import { getAllOrder, changePage, deleteOrderById, resetDeleteStatus } from '../../../actions/AdminActions';
+import { useNavigate } from 'react-router-dom';
 
 function OrderTable() {
 
-    const { isLoading, currentPage, limitPerPages, keyword, visiblePages, orders, totalPages } = useSelector(state => state.orderAdminReducer);
-    const dispatch = useDispatch()
+    const { isLoading, currentOrderPage, limitOrderPerPages, keyword,
+        visiblePages, orders, totalOrderPages, isUpdateStatusSuccessfully, isDeleted
+    } = useSelector(state => state.orderAdminReducer);
+    const [idToDelete, setIdToDelete] = useState(null);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = (id) => {
+        setShow(true);
+        setIdToDelete(id)
+    }
+
+    const handleDeleteOrder = () => {
+        // dispatch(deleteOrderById(idToDelete));
+        // setShow(false);
+        dispatch(deleteOrderById(idToDelete))
+            .then(() => {
+                dispatch(resetDeleteStatus())
+                setShow(false);
+            })
+            .catch(error => {
+                console.error("Failed to delete order:", error);
+            });
+
+    }
 
     const onPageChange = (page) => {
         dispatch(changePage(page))
     }
 
+    const handleOrderDetailClick = (id) => {
+        navigate(`/admin/order/${id}`);
+    }
+
     useEffect(() => {
-        dispatch(getAllOrder(keyword, currentPage, limitPerPages))
-    }, [currentPage, limitPerPages, keyword, dispatch])
+        dispatch(getAllOrder(keyword, currentOrderPage, limitOrderPerPages))
+    }, [currentOrderPage, limitOrderPerPages, keyword, dispatch, isUpdateStatusSuccessfully, isDeleted])
 
     return (
-        <div>
+        <div className='order-table'>
             <h4>Orders </h4>
             <Table striped bordered hover>
                 <thead>
@@ -44,7 +76,7 @@ function OrderTable() {
                         <>
                             {orders.map((order, index) => (
                                 <tr key={index}>
-                                    <td>{index+1}</td>
+                                    <td>{index + 1}</td>
                                     <td>{order.id}</td>
                                     <td>{order.fullname}</td>
                                     <td>{order.phone_number}</td>
@@ -56,22 +88,37 @@ function OrderTable() {
                                     <td>{order.payment_method}</td>
                                     <td>{order.total_money}</td>
                                     <td>
-                                        <a href='#'><MdDelete /></a>
+                                        <div className='detail-button' onClick={() => handleOrderDetailClick(order.id)}><MdReadMore style={{ color: "blue" }} /> detail</div>
+                                        <div className='delete-button' onClick={() => handleShow(order.id)}><MdDelete style={{ color: "red" }} /> delete</div>
                                     </td>
                                 </tr>
                             ))}
-                         </>   
+                        </>
                     )}
                 </tbody>
             </Table>
-            <Pagination>
-                <Pagination.First disabled={currentPage === 0} onClick={() => onPageChange(0)}/>
-                <Pagination.Prev disabled={currentPage === 0} onClick={() => onPageChange(currentPage-1)}/>
+            <Modal show={show} onHide={handleClose} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm deletion</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Do you really want to delete this order?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleDeleteOrder}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Pagination className="d-flex justify-content-center mt-5">
+                <Pagination.First disabled={currentOrderPage === 0} onClick={() => onPageChange(0)} />
+                <Pagination.Prev disabled={currentOrderPage === 0} onClick={() => onPageChange(currentOrderPage - 1)} />
                 {visiblePages.map((page, idx) => (
-                    <Pagination.Item key={idx} active={page === currentPage} onClick={() => onPageChange(page)}>{page + 1}</Pagination.Item>
+                    <Pagination.Item key={idx} active={page === currentOrderPage} onClick={() => onPageChange(page)}>{page + 1}</Pagination.Item>
                 ))}
-                <Pagination.Next disabled={currentPage === totalPages-1} onClick={() => onPageChange(currentPage + 1)}/>
-                <Pagination.Last disabled={currentPage === totalPages-1} onClick={() => onPageChange(totalPages-1)}/>
+                <Pagination.Next disabled={currentOrderPage === totalOrderPages - 1} onClick={() => onPageChange(currentOrderPage + 1)} />
+                <Pagination.Last disabled={currentOrderPage === totalOrderPages - 1} onClick={() => onPageChange(totalOrderPages - 1)} />
             </Pagination>
         </div>
     )

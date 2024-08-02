@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { thumbnailClick } from '../../../actions/detailProductAction'
 import CartService from '../../../services/CartService'
+import { toast } from 'react-toastify'
 
 function DetailProduct() {
 
@@ -19,18 +20,20 @@ function DetailProduct() {
     // useEffect(() => {
     //     dispatch(getDetailProduct(1))
     // }, [dispatch])
-
+    const caculateTotal = () => {
+        return (price * quantity).toFixed(2);
+    }
 
     const handleBuy = () => {
-        navigate("#")
+        navigate("/orders")
     }
 
     const handleAddToCart = () => {
         cartService.addToCart(id, quantity)
+        toast.info('Thêm sản phẩm vào giỏ hàng thành công!')
     }
 
     const handleThumbnailClick = (index) => {
-        console.log(index)
         dispatch(thumbnailClick(index))
     }
 
@@ -89,13 +92,10 @@ function DetailProduct() {
                     <div className="col-md-6">
                         <div className="product-details">
                             <h2>Thông tin chi tiết sản phẩm</h2>
-                            <p>Mô tả sản phẩm</p>
+                            <p>Mô tả sản phẩm:</p>
                             <p>{description}</p>
                             <p>Giá: ${price}</p>
-                            <div className="product-actions">
-                                <button className="btn btn-primary" onClick={() => handleAddToCart()}>Thêm vào giỏ hàng</button>
-                                <button className="btn btn-success" onClick={() => handleBuy()}>Mua ngay</button>
-                            </div>
+                            <p>Tổng giá: ${caculateTotal()}</p>
                             <div className="product-quantity-section">
                                 <p className="product-quantity-label">Số lượng</p>
                                 <div className="product-quantity">
@@ -105,6 +105,10 @@ function DetailProduct() {
                                         <button onClick={() => handleIncreaseQuantity()}>+</button>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="product-actions">
+                                <button className="btn btn-primary" onClick={() => handleAddToCart()}>Thêm vào giỏ hàng</button>
+                                <button className="btn btn-success" onClick={() => handleBuy()}>Mua ngay</button>
                             </div>
                         </div>
                     </div>

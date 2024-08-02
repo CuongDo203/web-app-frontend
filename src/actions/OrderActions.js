@@ -3,6 +3,10 @@ import axios from '../customize/axios'
 export const getProductsInCart = (cart) => async (dispatch) => {
     try {
         const productIds = Array.from(cart.keys())
+        if(productIds.length === 0) {
+            dispatch({type: 'FETCH_PRODUCTS_BY_IDS_FAILURE', payload: "Không có sản phẩm nào trong giỏ hàng!"})
+            return;
+        }
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/by-ids`, {
             params: {ids: productIds.join(',')}
         })
