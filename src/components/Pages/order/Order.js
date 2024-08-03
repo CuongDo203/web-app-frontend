@@ -24,7 +24,7 @@ function Order() {
         shipping_method: 'express',  //Mặc định là giao hàng nhanh
     })
 
-    const { orderData } = useSelector(state => state.getProductsInCart)
+    // const { orderData } = useSelector(state => state.getProductsInCart)
 
     const [show, setShow] = useState(false);
 
@@ -40,6 +40,7 @@ function Order() {
     const cartService = new CartService()
     const cart = cartService.getCart()
     const { cartItems } = useSelector(state => state.getProductsInCart)
+    const { idOrderPlaced } = useSelector(state => state.getProductsInCart)
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -53,23 +54,29 @@ function Order() {
         setProductIdToDelete(null)
     }
 
-    const updateCartFromCartItem = () => {
-        cart.clear()
-        cartItems.forEach((item) => {
-            cart.set(item.product.id, item.quantity)
-        })
-        cartService.setCart(cart)
-    }
+    // const updateCartFromCartItem = () => {
+    //     cart.clear()
+    //     cartItems.forEach((item) => {
+    //         cart.set(item.product.id, item.quantity)
+    //     })
+    //     cartService.setCart(cart)
+    // }
 
     useEffect(() => {
         dispatch(getProductsInCart(cart))
     }, [dispatch, cart, productIdToDelete])
+
+    // useEffect(() => {
+    //     console.log('validated in useeffect: ', validated);
+    //     console.log('idOrderPlaced in useeffect: ', idOrderPlaced)
+    // }, [validated, idOrderPlaced]);
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
+            return;
         }
         setValidated(true);
         const data = { ...formData }
@@ -79,12 +86,16 @@ function Order() {
             quantity: cartItem.quantity
         }));
         data.total_money = calculateTotal()
-        dispatch(placeOrder(data))
-        cartService.clearCart()
-        const orderId = orderData.id
-        if (validated) {
-            navigate(`/order-confirmation/${orderId}`)
-        }
+        dispatch(placeOrder(data)).then((orderData) => {
+            cartService.clearCart()
+            const orderId = orderData.id
+            console.log('idOrderPlaced: ', orderId)
+            console.log('validate: ', validated)
+            // if (validated) {
+            if(orderId !== null)
+                navigate(`/order-confirmation/${orderId}`)
+            // }
+        })
     };
 
     return (

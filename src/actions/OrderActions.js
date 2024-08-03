@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import axios from '../customize/axios'
 
 export const getProductsInCart = (cart) => async (dispatch) => {
@@ -31,12 +32,17 @@ export const getProductsInCart = (cart) => async (dispatch) => {
 
 export const placeOrder = (formData) => async (dispatch) => {
     try {
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/orders`, formData)
-        // response = response.data
-        alert('Đặt hàng thành công!')
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/orders`, formData)
+        let data = response.data
+        // console.log('data.id = ', data.id)
+        dispatch({type: 'PLACE_ORDER_SUCCESSFULLY', payload: data.id})
+        toast.success('Đặt hàng thành công!')
+        return data
     }
     catch (err) {
         console.log(err)
-        alert('Đặt hàng thất bại')
+        dispatch({type: 'PLACE_ORDER_FAILED'})
+        toast.error('Đặt hàng thất bại!')
+        return null
     }
 }
