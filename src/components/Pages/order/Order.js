@@ -40,7 +40,6 @@ function Order() {
     const cartService = new CartService()
     const cart = cartService.getCart()
     const { cartItems } = useSelector(state => state.getProductsInCart)
-    const { idOrderPlaced } = useSelector(state => state.getProductsInCart)
     const dispatch = useDispatch();
     const navigate = useNavigate()
 

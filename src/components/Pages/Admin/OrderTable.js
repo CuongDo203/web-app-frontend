@@ -38,7 +38,7 @@ function OrderTable() {
     }
 
     const onPageChange = (page) => {
-        dispatch(changePage(page))
+        dispatch(changePage(page, 'CHANGE_ORDER_PAGE'))
     }
 
     const handleOrderDetailClick = (id) => {

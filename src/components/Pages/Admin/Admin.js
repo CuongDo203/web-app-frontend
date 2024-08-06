@@ -34,8 +34,7 @@ function Admin() {
     return (
         <Container fluid className='admin-page'>
             <Row>
-
-                <div className='col-auto col-sm-2 bg-dark d-flex flex-column justify-content-between min-vh-100 '>
+                <div className='col-auto col-sm-2 bg-dark d-flex flex-column justify-content-between min-vh-100 sidebar'>
                     <div className='mt-2'>
                         <Nav.Link className='text-decoration-none ms-4 d-flex align-items-center text-white d-none d-sm-inline' role='button'>
                             <span className='f5-4'>Side Menu</span>
@@ -66,7 +65,7 @@ function Admin() {
                         </ul>
 
                     </div>
-                    <div className="dropdown open">
+                    <div className="dropdown open mb-2">
                         <NavItem
                             className="btn border-none dropdown-toggle text-white"
                             type="button"
@@ -82,15 +81,14 @@ function Admin() {
                         <div className="dropdown-menu" aria-labelledby="triggerId">
                             <NavDropdown.Item className="dropdown-item" href="#">
                                 <ImProfile style={{ marginRight: "5px" }} />
-                                Profile
+                                <span className='fs-5 ms-3 d-none d-sm-inline'>Profile</span>
                             </NavDropdown.Item>
                             <NavDropdown.Item className="dropdown-item" onClick={() => handleLogout()}>
                                 <RiLogoutBoxRLine style={{ marginRight: "5px" }} />
-                                Logout
+                                <span className='fs-5 ms-3 d-none d-sm-inline'>Logout</span>
                             </NavDropdown.Item>
                         </div>
                     </div>
-
                 </div>
                 <Col >
                     <div id='admin-page-wrapper'>

@@ -1,15 +1,19 @@
 .admin-page {
     background-color: rgb(218, 214, 214);
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .admin-page .sidebar {
-    height: 100vh;
+    /* min-height: 100vh; */
     overflow-y: auto;
     /* width: 220px; */
     background-color: azure;
     padding-left: 0;
     padding-right: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* transition: width 0.3s; */
 }
 
 #side-menu {
@@ -63,6 +67,10 @@
     display: none;
 }
 
+#admin-page-wrapper {
+    margin-left: 250px;
+}
+
 #admin-page-wrapper .content table {
     background-color: transparent;
 }
@@ -77,7 +85,59 @@
     cursor: pointer;
 }
 
+/* @media (min-width: 768px) {
+    #admin-page-wrapper {
+        margin-left: 140px;
+    }
+} */
+
+
+
+/* @media (max-width: 576px) {
+    #admin-page-wrapper {
+        margin-left: 70px;
+    }
+}
+
+@media (min-width: 576px) {
+    #admin-page-wrapper {
+        margin-left: 110px;
+    }
+} */
 /* order-admin-detail page */
 .order-admin-detail {
     color: black;
+}
+
+/* Product table */
+#admin-product-table #action {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px 20px;
+}
+
+#search-product5 {
+    max-width: 400px;
+    border: 1px solid #284066;
+    color: #000;
+}
+
+#search-product5::placeholder {
+    color: rgb(64, 73, 70);
+}
+
+#admin-product-table .detail-button,
+#admin-product-table .delete-button {
+    padding: 10px;
+}
+
+#admin-product-table .detail-button:hover,
+#admin-product-table .delete-button:hover{
+    background-color: rgb(157, 157, 202);
+    cursor: pointer;
+}
+
+.table-action {
+    display: flex;
+    justify-content: space-around;
 }

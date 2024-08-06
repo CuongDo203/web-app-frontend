@@ -76,6 +76,6 @@ td {
     width: 200px;
 }
 
-form .invalid-feedback {
+#order form .invalid-feedback {
     color: yellow;
 }

@@ -1,0 +1,10 @@
+.form-add-product input, 
+.form-add-product .product-name,
+.form-add-product .product-price,
+.form-add-product .product-description{
+    color: #000;
+}
+
+.form-add-product input::placeholder {
+    color: blueviolet;
+}

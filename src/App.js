@@ -74,7 +74,7 @@ function App() {
           <Route path="order" element={<OrderTable />} />
           <Route path="order/:id" element={<OrderDetail />} />
           <Route path="product" element={<ProductTable />} />
-          <Route path="category" element={<CategoryTable />} />
+          <Route path="category" element={<CategoryTable />} /> 
           <Route path="*" element={<NoMatch />} />
         </Route>
         <Route path="*" element={<NoMatch />} />
