@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategories } from '../../../../actions/productActions';
+import { getCategories } from '../../../../../actions/productActions';
 import './AddProduct.css'
-import { AddNewProduct, uploadImage } from '../../../../actions/AdminActions';
+import { AddNewProduct, uploadImage } from '../../../../../actions/AdminActions';
 
 function AddProduct(props) {
 
@@ -30,7 +30,6 @@ function AddProduct(props) {
 
     const addNewProduct = (event) => {
         const form = event.currentTarget;
-        console.log(typeof newProduct.price)
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -60,10 +59,10 @@ function AddProduct(props) {
     }
 
     const onFileChange = (event) => {
-        Array.from(event.target.files).map((file) => (
-            console.log(file)
-        ))
-        setNewProduct({...newProduct, images: event.target.files})
+        // Array.from(event.target.files).map((file) => (
+        //     console.log(file)
+        // ))
+        setNewProduct({...newProduct, images: Array.from(event.target.files)})
     };
 
     useEffect(() => {

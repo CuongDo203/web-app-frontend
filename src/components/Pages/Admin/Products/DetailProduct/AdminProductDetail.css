@@ -1,0 +1,41 @@
+#admin-product-detail {
+    color: #000;
+    display: flex;
+    justify-content: center;
+}
+
+#admin-product-detail form {
+    margin-top: 20px;
+    border: 1px solid #000;
+    max-width: 800px;
+    width: 800px;
+    padding: 30px 20px;
+}
+
+#admin-product-detail .carousel {
+    width: 500px;   
+}
+
+#admin-product-detail .carousel img{
+    width: 100%;
+    height: auto;
+}
+
+#admin-product-detail input[type="file"] {
+    display: none;
+}
+
+#add-image-icon {
+    scale: 1.6;
+}
+
+#add-image-icon:hover {
+    color: green;
+    cursor: pointer;
+    transition: 0.2s;
+    scale: 2;
+}
+
+#admin-product-detail .detail-product-label {
+    font-weight: 700;
+}

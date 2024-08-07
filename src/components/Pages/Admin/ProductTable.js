@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changePage, getAllProducts } from '../../../actions/AdminActions';
 import { MdDelete } from "react-icons/md";
 import { MdReadMore } from "react-icons/md";
-import AddProduct from './AddProduct/AddProduct';
+import AddProduct from './Products/AddProduct/AddProduct';
+import { useNavigate } from 'react-router-dom';
 
 function ProductTable() {
 
@@ -14,8 +15,8 @@ function ProductTable() {
   const dispatch = useDispatch();
 
   const [searchKeyword, setSearchKeyword] = useState(keyword)
-  const [typingTimeout, setTypingTimeout] = useState(0);
-  const [modalAddShow, setModalAddShow] = React.useState(false);
+  const [modalAddShow, setModalAddShow] = useState(false);
+  const navigate = useNavigate()
 
   const onPageChange = (page) => {
     dispatch(changePage(page, 'CHANGE_PRODUCT_PAGE'))
@@ -25,17 +26,9 @@ function ProductTable() {
     dispatch(getAllProducts(searchKeyword, 0, currentProductPage, limitProductPerPages))
   }, [dispatch, currentProductPage, searchKeyword, limitProductPerPages])
 
-  // useEffect(() => {
-  //   if (typingTimeout) {
-  //     clearTimeout(typingTimeout);
-  //   }
-  //   const timeout = setTimeout(() => {
-  //     dispatch(setSearchKeyword(searchKeyword));
-  //     dispatch(getAllProducts(searchKeyword, 0, currentProductPage, limitProductPerPages));
-  //   }, 300);
-  //   setTypingTimeout(timeout);
-  //   return () => clearTimeout(timeout);
-  // }, [searchKeyword,currentProductPage, dispatch, limitProductPerPages])
+  const handleProductDetailClick = (productId) => {
+      navigate(`/admin/product/${productId}`)
+  }
 
   return (
     <div id='admin-product-table'>
@@ -70,7 +63,8 @@ function ProductTable() {
               <td>{product.price}</td>
               <td>{product.category_id}</td>
               <td className='table-action'>
-              <div className='detail-button' ><MdReadMore style={{ color: "blue" }} /> detail</div>
+              <div className='detail-button' onClick={() => handleProductDetailClick(product.id)}>
+                <MdReadMore style={{ color: "blue" }} /> detail</div>
               <div className='delete-button' ><MdDelete style={{ color: "red" }} /> delete</div>
               </td>
             </tr>

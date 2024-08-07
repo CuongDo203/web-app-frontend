@@ -109,13 +109,13 @@ export const AddNewProduct = (newProduct) => async (dispatch) => {
             category_id: newProduct.category_id
         })
         const data = response.data
-        dispatch({type: 'ADD_NEW_PD_SUCCESSFULLY'})
+        dispatch({ type: 'ADD_NEW_PD_SUCCESSFULLY' })
         toast.success('Add new products successfully!')
         return data
     }
-    catch(err) {
+    catch (err) {
         console.log(err)
-        dispatch({type: 'ADD_NEW_PD_FAILED'})
+        dispatch({ type: 'ADD_NEW_PD_FAILED' })
         toast.error('Add new product failed!')
         return null
     }
@@ -123,25 +123,33 @@ export const AddNewProduct = (newProduct) => async (dispatch) => {
 
 export const uploadImage = (productId, images) => async (dispatch) => {
     try {
-        console.log('product id: ', productId)
-        console.log('images', images)
+        if(images.length === 0) {
+            return
+        }
         const formData = new FormData();
-        Array.from(images).forEach((image,  idx) => formData.append('files', image))
+        images.forEach((image) => formData.append('files', image))
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/products/uploads/${productId}`, formData);
+        toast.success('Add new images successfully!')
     }
-    catch(err) {
+    catch (err) {
         console.log(err)
+        toast.error('Can not add more images! The number of images cannot exceed 5!')
     }
 }
 
-// export const setSearchKeyword = (keyword) =>async (dispatch) => {
-//     try {
-//         await dispatch({
-//             type: 'SET_SEARCH_KEYWORD',
-//             payload: keyword,
-//         })
-//     }
-//     catch (err) {
-//         console.log(err)
-//     }
-// };
+export const getProductById = (productId) => async (dispatch) => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}`)
+        let data = response.data
+        if (data.product_images && data.product_images.length > 0) {
+            data.product_images.forEach((product_image) => {
+                product_image.image_url = `${process.env.REACT_APP_API_BASE_URL}/products/images/${product_image.image_url}`
+            })
+        }
+        return data
+    }
+    catch (err) {
+        console.log(err)
+        return null
+    }
+}

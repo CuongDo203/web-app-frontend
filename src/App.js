@@ -28,6 +28,8 @@ import { ToastContainer } from 'react-toastify';
 import EmailForm from "./components/Pages/ForgetPassword/EmailForm";
 import ResetPasswordForm from "./components/Pages/ForgetPassword/ResetPasswordForm";
 import OAuth2RedirectHandler from "./components/OAuth2/OAuth2RedirectHandler";
+import AdminProductDetail from "./components/Pages/Admin/Products/DetailProduct/AdminProductDetail";
+
 
 function NoMatch() {
   return (
@@ -74,6 +76,7 @@ function App() {
           <Route path="order" element={<OrderTable />} />
           <Route path="order/:id" element={<OrderDetail />} />
           <Route path="product" element={<ProductTable />} />
+          <Route path="product/:id" element={<AdminProductDetail/>}/>
           <Route path="category" element={<CategoryTable />} /> 
           <Route path="*" element={<NoMatch />} />
         </Route>

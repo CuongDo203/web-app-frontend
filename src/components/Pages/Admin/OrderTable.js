@@ -88,8 +88,10 @@ function OrderTable() {
                                     <td>{order.payment_method}</td>
                                     <td>{order.total_money}</td>
                                     <td>
-                                        <div className='detail-button' onClick={() => handleOrderDetailClick(order.id)}><MdReadMore style={{ color: "blue" }} /> detail</div>
-                                        <div className='delete-button' onClick={() => handleShow(order.id)}><MdDelete style={{ color: "red" }} /> delete</div>
+                                        <div className='detail-button' 
+                                            onClick={() => handleOrderDetailClick(order.id)}><MdReadMore style={{ color: "blue" }} /> detail</div>
+                                        <div className='delete-button' 
+                                            onClick={() => handleShow(order.id)}><MdDelete style={{ color: "red" }} /> delete</div>
                                     </td>
                                 </tr>
                             ))}
