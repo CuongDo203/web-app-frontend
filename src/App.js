@@ -19,16 +19,17 @@ import UserProfile from "./components/Pages/UserProfile/UserProfile";
 import Notifications from "./components/Pages/Notifications/Notifications";
 import Admin from "./components/Pages/Admin/Admin";
 import { Link } from 'react-router-dom';
-import OrderDetail from "./components/Pages/Admin/OrderDetail";
-import OrderTable from "./components/Pages/Admin/OrderTable";
-import ProductTable from "./components/Pages/Admin/ProductTable";
-import CategoryTable from "./components/Pages/Admin/CategoryTable";
+import OrderDetail from "./components/Pages/Admin/Orders/OrderDetail";
+import OrderTable from "./components/Pages/Admin/Orders/OrderTable";
+import ProductTable from "./components/Pages/Admin/Products/ProductTable";
+import CategoryTable from "./components/Pages/Admin/Categories/CategoryTable";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import EmailForm from "./components/Pages/ForgetPassword/EmailForm";
 import ResetPasswordForm from "./components/Pages/ForgetPassword/ResetPasswordForm";
 import OAuth2RedirectHandler from "./components/OAuth2/OAuth2RedirectHandler";
 import AdminProductDetail from "./components/Pages/Admin/Products/DetailProduct/AdminProductDetail";
+import MyOrders from "./components/Pages/MyOrders/MyOrders";
 
 
 function NoMatch() {
@@ -72,6 +73,7 @@ function App() {
         <Route path="/forget-password" element={<EmailForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/user-profile/:id" element={<UserProfile />} />
+        <Route path="/my-orders/:id" element={<MyOrders />} />
         <Route path="/admin" element={<Admin />} >
           <Route path="order" element={<OrderTable />} />
           <Route path="order/:id" element={<OrderDetail />} />

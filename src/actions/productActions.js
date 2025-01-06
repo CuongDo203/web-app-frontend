@@ -39,9 +39,11 @@ export const getCategories = () => async (dispatch) => {
         })
         const data = response.data
         dispatch({type: 'FETCH_CATEGORIES', payload: data})
+        return data
     }
     catch(err) {
         console.log(err)
+        return null
     }
 }
 

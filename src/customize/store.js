@@ -22,7 +22,8 @@ const store = configureStore({
         orderAdminReducer: OrderAdminReducer,
         productAdminReducer: ProductAdminReducer,
         emailReducer: sendEmailReducer,
-        changePwReducer: changePasswordReducer
+        changePwReducer: changePasswordReducer,
+        getOrdersOfUserReducer: OrderReducer
     }
 });
 

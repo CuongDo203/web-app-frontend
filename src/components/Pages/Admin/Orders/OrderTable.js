@@ -3,38 +3,37 @@ import { MdDelete } from "react-icons/md";
 import { MdReadMore } from "react-icons/md";
 import { Table, Pagination, Spinner, Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrder, changePage, deleteOrderById, resetDeleteStatus } from '../../../actions/AdminActions';
+import { getAllOrder, changePage, deleteOrderById, resetDeleteStatus } from '../../../../actions/AdminActions';
 import { useNavigate } from 'react-router-dom';
 
 function OrderTable() {
 
     const { isLoading, currentOrderPage, limitOrderPerPages, keyword,
-        visiblePages, orders, totalOrderPages, isUpdateStatusSuccessfully, isDeleted
+        visiblePages, orders, totalOrderPages
     } = useSelector(state => state.orderAdminReducer);
     const [idToDelete, setIdToDelete] = useState(null);
+    const [show, setShow] = useState(false);
+    const [data, setData] = useState(orders)
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
-    const handleShow = (id) => {
+
+    const handleDeleteClick = (id) => {
         setShow(true);
         setIdToDelete(id)
     }
 
-    const handleDeleteOrder = () => {
-        // dispatch(deleteOrderById(idToDelete));
-        // setShow(false);
+    const handleConfirmDeleteOrder = () => {
+        const itemBackup = data.find(item => item.id === idToDelete);
+        setData(data.filter(item => item.id !== idToDelete));
         dispatch(deleteOrderById(idToDelete))
             .then(() => {
-                dispatch(resetDeleteStatus())
-                setShow(false);
             })
-            .catch(error => {
-                console.error("Failed to delete order:", error);
+            .catch(() => {
+                setData(prevData => [...prevData, itemBackup])
             });
-
+        setShow(false);
     }
 
     const onPageChange = (page) => {
@@ -47,7 +46,11 @@ function OrderTable() {
 
     useEffect(() => {
         dispatch(getAllOrder(keyword, currentOrderPage, limitOrderPerPages))
-    }, [currentOrderPage, limitOrderPerPages, keyword, dispatch, isUpdateStatusSuccessfully, isDeleted])
+    }, [currentOrderPage, limitOrderPerPages, keyword, dispatch])
+
+    useEffect(() => {
+        setData(orders)
+    }, [orders])
 
     return (
         <div className='order-table'>
@@ -70,11 +73,11 @@ function OrderTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {isLoading ? (
+                    {/* {isLoading ? (
                         <Spinner animation="border" variant="info" />
-                    ) : (
+                    ) : ( */}
                         <>
-                            {orders.map((order, index) => (
+                            {data.map((order, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{order.id}</td>
@@ -88,15 +91,15 @@ function OrderTable() {
                                     <td>{order.payment_method}</td>
                                     <td>{order.total_money}</td>
                                     <td>
-                                        <div className='detail-button' 
+                                        <div className='detail-button'
                                             onClick={() => handleOrderDetailClick(order.id)}><MdReadMore style={{ color: "blue" }} /> detail</div>
-                                        <div className='delete-button' 
-                                            onClick={() => handleShow(order.id)}><MdDelete style={{ color: "red" }} /> delete</div>
+                                        <div className='delete-button'
+                                            onClick={() => handleDeleteClick(order.id)}><MdDelete style={{ color: "red" }} /> delete</div>
                                     </td>
                                 </tr>
                             ))}
                         </>
-                    )}
+                    {/* )} */}
                 </tbody>
             </Table>
             <Modal show={show} onHide={handleClose} centered={true}>
@@ -108,7 +111,7 @@ function OrderTable() {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleDeleteOrder}>
+                    <Button variant="danger" onClick={handleConfirmDeleteOrder}>
                         Delete
                     </Button>
                 </Modal.Footer>

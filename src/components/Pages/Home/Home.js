@@ -67,7 +67,7 @@ function Home() {
 
                     <div className="mb-5">
                         <InputGroup className="d-flex justify-content-center">
-                            <Row>
+                            <Row >
                                 <Col md>
                                     <FormControl type="text" placeholder="Tìm sản phẩm" value={textVal}
                                     onChange={(e) => setTextVal(e.target.value)}/>

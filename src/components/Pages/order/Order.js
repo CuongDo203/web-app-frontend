@@ -24,6 +24,57 @@ function Order() {
         shipping_method: 'express',  //Mặc định là giao hàng nhanh
     })
 
+    // Add state for validation errors
+    const [validationErrors, setValidationErrors] = useState({});
+
+    // Add these validation functions
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
+    const validatePhone = (phone) => {
+        const regex = /^[0-9]{10}$/; // Assumes 10 digit phone number
+        return regex.test(phone);
+    };
+
+    const validateAddress = (address) => {
+        return address.trim().length > 0;
+    };
+
+    const validateFullname = (name) => {
+        return name.trim().length > 0;
+    };
+
+    // Add validation check function
+    const validateForm = () => {
+        let isValid = true;
+        const errors = {};
+
+        if (!validateFullname(formData.fullname)) {
+            errors.fullname = "Họ tên không được để trống";
+            isValid = false;
+        }
+
+        if (!validateEmail(formData.email)) {
+            errors.email = "Email không hợp lệ";
+            isValid = false;
+        }
+
+        if (!validatePhone(formData.phone_number)) {
+            errors.phone = "Số điện thoại không hợp lệ";
+            isValid = false;
+        }
+
+        if (!validateAddress(formData.address)) {
+            errors.address = "Địa chỉ không được để trống";
+            isValid = false;
+        }
+
+        setValidationErrors(errors);
+        return isValid;
+    };
+
     // const { orderData } = useSelector(state => state.getProductsInCart)
 
     const [show, setShow] = useState(false);
@@ -70,31 +121,38 @@ function Order() {
     //     console.log('idOrderPlaced in useeffect: ', idOrderPlaced)
     // }, [validated, idOrderPlaced]);
 
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-            return;
+    // Modify your form submit handler
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        if (validateForm()) {
+            // Proceed with order submission
+            const form = e.currentTarget;
+            if (form.checkValidity() === false) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+            setValidated(true);
+            const data = { ...formData }
+            data.user_id = getUser().id;
+            data.cart_items = cartItems.map(cartItem => ({
+                product_id: cartItem.product.id,
+                quantity: cartItem.quantity
+            }));
+            data.total_money = calculateTotal()
+            dispatch(placeOrder(data)).then((orderData) => {
+                cartService.clearCart()
+                console.log('orderData: ', orderData)
+                const orderId = orderData.id
+                console.log('idOrderPlaced: ', orderId)
+                console.log('validate: ', validated)
+                // if (validated) {
+                if(orderId !== null)
+                    navigate(`/order-confirmation/${orderId}`)
+                // }
+            })
         }
-        setValidated(true);
-        const data = { ...formData }
-        data.user_id = getUser().id;
-        data.cart_items = cartItems.map(cartItem => ({
-            product_id: cartItem.product.id,
-            quantity: cartItem.quantity
-        }));
-        data.total_money = calculateTotal()
-        dispatch(placeOrder(data)).then((orderData) => {
-            cartService.clearCart()
-            const orderId = orderData.id
-            console.log('idOrderPlaced: ', orderId)
-            console.log('validate: ', validated)
-            // if (validated) {
-            if(orderId !== null)
-                navigate(`/order-confirmation/${orderId}`)
-            // }
-        })
     };
 
     return (
@@ -114,33 +172,41 @@ function Order() {
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="name">Họ và tên</FormLabel>
                                         <FormControl type="text" id="name" required value={formData.fullname}
-                                            onChange={(e) => setFormData({ ...formData, fullname: e.target.value })} />
+                                            onChange={(e) => setFormData({ ...formData, fullname: e.target.value })} 
+                                            isInvalid={validationErrors.fullname}
+                                        />
                                         <Form.Control.Feedback type="invalid">
-                                            Vui lòng điền đầy đủ họ tên!
+                                            {/* Vui lòng điền đầy đủ họ tên! */}
+                                            {validationErrors.fullname || "Vui lòng điền đầy đủ họ tên!"}
                                         </Form.Control.Feedback>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="email">Email</FormLabel>
                                         <FormControl type="email" id="email" required value={formData.email}
+                                            isInvalid={validationErrors.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                                         <Form.Control.Feedback type="invalid">
-                                            Vui lòng nhập đúng định dạng email!
+                                            {validationErrors.email || "Vui lòng nhập đúng định dạng email!"}
                                         </Form.Control.Feedback>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="phone">Số điện thoại</FormLabel>
                                         <FormControl type="text" id="phone" required value={formData.phone_number}
-                                            onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })} />
+                                            onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })} 
+                                            isValid={validationErrors.phone} 
+                                            />
                                         <Form.Control.Feedback type="invalid">
-                                            Vui lòng điền đầy đủ số điện thoại!
+                                            {validationErrors.phone || "Vui lòng điền đúng định dạng số điện thoại!"}
                                         </Form.Control.Feedback>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <FormLabel htmlFor="address">Địa chỉ</FormLabel>
                                         <FormControl type="text" id="address" required value={formData.address}
-                                            onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
+                                            onChange={(e) => setFormData({ ...formData, address: e.target.value })} 
+                                            isValid={validationErrors.address}
+                                            />
                                         <Form.Control.Feedback type="invalid">
-                                            Vui lòng nhập địa chỉ!
+                                            {validationErrors.address || "Vui lòng điền địa chỉ!"}
                                         </Form.Control.Feedback>
                                     </FormGroup>
                                     <FormGroup className="mb-3">

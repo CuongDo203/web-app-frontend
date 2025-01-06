@@ -18,6 +18,7 @@ const initialState = {
         coupon_code: '',
         cart_items: []
     },
+    orders: [],
     error: ""
 }
 
@@ -45,6 +46,16 @@ const OrderReducer = (state = initialState, action) => {
                 ...state,
                 idOrderPlaced: null
             }
+        case 'FETCH_ORDERS_SUCCESSFULLY':   
+            return {
+                ...state,
+                orders: action.payload
+            }
+        case 'FETCH_ORDERS_FAILED':
+            return {
+                ...state,
+                orders: []
+            } 
         default:
             return state
     }

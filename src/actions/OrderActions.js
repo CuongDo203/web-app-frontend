@@ -46,3 +46,18 @@ export const placeOrder = (formData) => async (dispatch) => {
         return null
     }
 }
+
+export const getOrdersOfUser = (userId) => async (dispatch) => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/orders/user`, {
+            params: {userId}
+        })
+        const data = response.data
+        console.log('data = ', data)
+        dispatch({type: 'FETCH_ORDERS_SUCCESSFULLY', payload: data})
+    }
+    catch (err) {
+        console.log(err)
+        dispatch({type: 'FETCH_ORDERS_FAILED', payload: err.message})
+    }
+}

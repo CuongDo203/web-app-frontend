@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getOrderById, resetUpdateStatus, updateOrderStatus } from '../../../actions/AdminActions';
+import { getOrderById, resetUpdateStatus, updateOrderStatus } from '../../../../actions/AdminActions';
 import { toast } from 'react-toastify';
 
 function OrderDetail() {

@@ -53,11 +53,13 @@ export const deleteOrderById = (id) => async (dispatch) => {
         await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`, {
             responseType: "text"
         })
+        toast.success(`Delete order with ID = ${id} successfully`)
         dispatch({ type: 'DELETE_ORDER_SUCCESSFULLY' })
     }
     catch (err) {
         console.log(err)
         dispatch({ type: 'DELETE_ORDER_FAILED' })
+        toast.error(`Delete order with ID = ${id} failed`)
     }
 }
 
@@ -151,5 +153,16 @@ export const getProductById = (productId) => async (dispatch) => {
     catch (err) {
         console.log(err)
         return null
+    }
+}
+
+export const deleteProductById = (productId) => async () => {
+    try {
+        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}`)
+        toast.success(`Delete product with ID = ${productId} successfully!`)
+    }
+    catch(err) {
+        console.log(err)
+        toast.error(`Delete product with ID = ${productId} failed!`)
     }
 }

@@ -1,0 +1,4 @@
+#admin-category-table table .group-button {
+    display: flex;
+    justify-content: space-evenly;
+}
