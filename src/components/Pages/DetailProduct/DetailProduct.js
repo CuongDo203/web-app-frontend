@@ -26,8 +26,6 @@ function DetailProduct() {
     }
 
     const handleBuy = () => {
-        // navigate("/orders")
-        // Xử lý mua hàng
         
     }
 

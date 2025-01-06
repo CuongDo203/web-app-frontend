@@ -19,6 +19,8 @@ const initialState = {
         cart_items: []
     },
     orders: [],
+    totalPage: 0,
+    loading: false,
     error: ""
 }
 
@@ -46,15 +48,23 @@ const OrderReducer = (state = initialState, action) => {
                 ...state,
                 idOrderPlaced: null
             }
-        case 'FETCH_ORDERS_SUCCESSFULLY':   
+        case 'FETCH_ORDERS_REQUEST': 
             return {
                 ...state,
-                orders: action.payload
+                loading: true   
+            }
+        case 'FETCH_ORDERS_SUCCESSFULLY':  
+            return {
+                ...state,
+                orders: action.payload.orders,
+                totalPage: action.payload.totalPages,
+                loading: false
             }
         case 'FETCH_ORDERS_FAILED':
             return {
                 ...state,
-                orders: []
+                orders: [],
+                loading: false,
             } 
         default:
             return state

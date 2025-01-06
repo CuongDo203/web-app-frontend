@@ -73,7 +73,7 @@ function App() {
         <Route path="/forget-password" element={<EmailForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/user-profile/:id" element={<UserProfile />} />
-        <Route path="/my-orders/:id" element={<MyOrders />} />
+        <Route path="/my-orders/:userId" element={<MyOrders />} />
         <Route path="/admin" element={<Admin />} >
           <Route path="order" element={<OrderTable />} />
           <Route path="order/:id" element={<OrderDetail />} />
