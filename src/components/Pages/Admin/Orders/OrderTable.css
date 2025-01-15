@@ -1,0 +1,131 @@
+.order-table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+.order-table th {
+    background: #f8f9fa;
+    padding: 15px;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.order-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+
+.order-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+.text-center.my-5 {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #0d6efd;
+    text-transform: uppercase;
+}
+
+.order-table .status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.detail-button,
+.delete-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.detail-button {
+    color: #007bff;
+    background: rgba(0, 123, 255, 0.1);
+}
+
+.delete-button {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.detail-button:hover {
+    background: rgba(0, 123, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.delete-button:hover {
+    background: rgba(220, 53, 69, 0.2);
+    transform: translateY(-1px);
+}
+
+.action-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.detail-button {
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+    border: 1px solid rgba(13, 110, 253, 0.2);
+}
+
+.delete-button {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+.action-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-button:hover {
+    background: rgba(13, 110, 253, 0.2);
+}
+
+.delete-button:hover {
+    background: rgba(220, 53, 69, 0.2);
+}
+
+.action-button svg {
+    margin-right: 4px;
+    font-size: 1.1rem;
+}

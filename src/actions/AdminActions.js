@@ -39,6 +39,7 @@ export const getOrderById = (id) => async (dispatch) => {
 
 export const updateOrderStatus = (orderDTO) => async (dispatch) => {
     try {
+        console.log(orderDTO)
         await axios.put(`${process.env.REACT_APP_API_BASE_URL}/orders/${orderDTO.id}`, orderDTO)
         dispatch({ type: 'UPDATE_ORDER_SUCCESSFULLY', payload: orderDTO.status })
     }

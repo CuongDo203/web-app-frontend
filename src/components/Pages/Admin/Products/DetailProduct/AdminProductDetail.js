@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { getProductById, uploadImage } from '../../../../../actions/AdminActions';
 import { TbSquareRoundedPlusFilled } from "react-icons/tb";
 import { toast } from 'react-toastify';
+import { FaTrash } from "react-icons/fa";
 
 function AdminProductDetail() {
 
@@ -51,68 +52,93 @@ function AdminProductDetail() {
     })
   }, [id, dispatch, isAddImgSuccess])
 
+  const handleDeleteImage = (index) => {
+    // Implement the delete image functionality here
+  }
+
   return (
-    <Container id='admin-product-detail'>
-      <Form>
-        <h2>Detailed information about products with ID = {id}</h2>
-        <Form.Group as={Row} className="mb-3">
-          <Form.Label className='detail-product-label' column sm={3}>
-            ID:
-          </Form.Label>
-          <Col sm={9}>
-            <Form.Label>{product !== null ? product.id : '...'}</Form.Label>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm={3} className='detail-product-label'>
-            Name:
-          </Form.Label>
-          <Col sm={9}>
-            <Form.Label>{product !== null ? product.name : '...'}</Form.Label>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm={3} className='detail-product-label'>
-            Price:
-          </Form.Label>
-          <Col sm={9}>
-            <Form.Label>{product !== null ? product.price : '...'}</Form.Label>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm={3} className='detail-product-label'>
-            Description:
-          </Form.Label>
-          <Col sm={9}>
-            <Form.Label>{product !== null ? product.description : '...'}</Form.Label>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm={3} className='detail-product-label'>
-            Images:
-          </Form.Label>
-          <Col sm={9}>
-            <Row>
-              <Col><p>{product != null ? product.product_images.length : '-'} / maximum (5)</p></Col>
-              <Col>
-                <Form.Label htmlFor='image-upload'>
-                  <TbSquareRoundedPlusFilled id='add-image-icon' />
-                </Form.Label>
-                <Form.Control type='file' multiple id='image-upload' onChange={(e) => handleFileChange(e)} />
-              </Col>
-            </Row>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3">
-        <Carousel >
-              {product !== null ? product.product_images.map((item, idx) => (
-                <Carousel.Item interval={2000} key={idx}>
-                <Image src={item.image_url} />
-              </Carousel.Item>
-              )) : ''}
+    <Container className="admin-product-detail">
+      <h2 className="section-title">Product Details</h2>
+      
+      <Row>
+        <Col md={6}>
+          <div className="form-section">
+            <Form.Group className="mb-3">
+              <Form.Label>Product Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={product?.name || ''}
+                disabled
+              />
+            </Form.Group>
+            
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={product?.description || ''}
+                disabled
+              />
+            </Form.Group>
+            
+            <Form.Group className="mb-3">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="number"
+                value={product?.price || ''}
+                disabled
+              />
+            </Form.Group>
+          </div>
+        </Col>
+        
+        <Col md={6}>
+          <div className="image-carousel">
+            <Carousel>
+              {product?.product_images?.map((image, index) => (
+                <Carousel.Item key={index}>
+                  <Image
+                    className="carousel-image"
+                    src={image.image_url}
+                    alt={`Product image ${index + 1}`}
+                  />
+                </Carousel.Item>
+              ))}
             </Carousel>
-        </Form.Group>
-      </Form>
+            <div className="image-counter">
+              Current Images: <span>{product?.product_images?.length || 0}/5</span>
+            </div>
+          </div>
+          
+          <div 
+            className="image-upload-section"
+            onClick={() => document.getElementById('imageUpload').click()}
+          >
+            <TbSquareRoundedPlusFilled className="upload-icon" />
+            <p>Click to add new images</p>
+            <input
+              id="imageUpload"
+              type="file"
+              multiple
+              hidden
+              onChange={handleFileChange}
+            />
+          </div>
+
+          <div className="image-list">
+            {product?.images?.map((image, index) => (
+              <div key={index} className="image-item">
+                <img src={image} alt={`Product ${index + 1}`} />
+                <FaTrash 
+                  className="delete-icon"
+                  onClick={() => handleDeleteImage(index)}
+                />
+              </div>
+            ))}
+          </div>
+        </Col>
+      </Row>
     </Container>
   )
 }

@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changePage, deleteProductById, getAllProducts } from '../../../../actions/AdminActions';
 import { MdDelete } from "react-icons/md";
 import { MdReadMore } from "react-icons/md";
+import { FaSearch, FaTimes } from 'react-icons/fa';
 import AddProduct from './AddProduct/AddProduct';
 import { useNavigate } from 'react-router-dom';
+import './ProductTable.css';
 
 function ProductTable() {
 
@@ -22,6 +24,7 @@ function ProductTable() {
   const handleClose = () => setShow(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [data, setData] = useState(products);
+  const [searchTimeout, setSearchTimeout] = useState(null);
 
   const onPageChange = (page) => {
     dispatch(changePage(page, 'CHANGE_PRODUCT_PAGE'))
@@ -55,6 +58,16 @@ function ProductTable() {
     setShow(false)
   }
 
+  const handleSearch = (value) => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    const timeoutId = setTimeout(() => {
+      setSearchKeyword(value);
+    }, 500);
+    setSearchTimeout(timeoutId);
+  };
+
   // if(isLoading) {
   //   return <Spinner animation="border" variant="info"/>
   // }
@@ -62,16 +75,43 @@ function ProductTable() {
   return (
     <>
       <div id='admin-product-table'>
-        <h4>Products</h4>
+        <h4 className='text-center product-title'>Products</h4>
         <div id='action'>
-          <Button onClick={() => setModalAddShow(true)}>Add new</Button>
-          <Form.Control
-            type="text"
-            id="search-product5"
-            placeholder='Search'
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-          />
+          <Button
+            variant='primary'
+            className="d-flex align-items-center gap-2 px-3"
+            onClick={() => setModalAddShow(true)}
+            style={{
+              backgroundColor: '#0d6efd',
+              borderColor: '#0d6efd',
+              transition: 'all 0.3s ease',
+              padding: '8px 16px',
+              height: '38px'
+            }}
+          >
+            <i className="fas fa-plus me-2"></i>
+            Add new product
+          </Button>
+          <div className="search-container">
+            <div className="search-wrapper">
+              <FaSearch className="search-icon" />
+              <Form.Control
+                type="text"
+                className="search-input"
+                placeholder="Search products..."
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+              {searchKeyword && (
+                <FaTimes
+                  className="clear-icon"
+                  onClick={() => {
+                    setSearchKeyword('');
+                    document.querySelector('.search-input').value = '';
+                  }}
+                />
+              )}
+            </div>
+          </div>
         </div>
         <Table striped bordered hover>
           <thead>

@@ -232,9 +232,7 @@
 
 /* Grid adjustments */
 @media (min-width: 768px) {
-    .row {
-        margin: 0 -15px;
-    }
+    
     
     .col {
         padding: 0 15px;

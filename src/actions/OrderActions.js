@@ -34,7 +34,6 @@ export const placeOrder = (formData) => async (dispatch) => {
     try {
         const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/orders`, formData)
         let data = response.data
-        // console.log('data.id = ', data.id)
         dispatch({ type: 'PLACE_ORDER_SUCCESSFULLY', payload: data.id })
         toast.success('Đặt hàng thành công!')
         return data

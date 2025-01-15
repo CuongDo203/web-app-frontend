@@ -9,6 +9,8 @@ import updateUserReducer from '../reducers/UpdateUserReducer';
 import { OrderAdminReducer, ProductAdminReducer } from '../reducers/AdminReducer';
 import sendEmailReducer from '../reducers/SendEmailReducer';
 import changePasswordReducer from '../reducers/ChangePasswordReducer';
+import CategoryReducer from '../reducers/CategoryReducer';
+import DiscountReducer from '../reducers/DiscountReducer';
 
 const store = configureStore({
     reducer: {
@@ -23,7 +25,10 @@ const store = configureStore({
         productAdminReducer: ProductAdminReducer,
         emailReducer: sendEmailReducer,
         changePwReducer: changePasswordReducer,
-        getOrdersOfUserReducer: OrderReducer
+        getOrdersOfUserReducer: OrderReducer,
+        addCategoryReducer: CategoryReducer,
+        getCategoryReducer: CategoryReducer,
+        getDiscountsReducer: DiscountReducer
     }
 });
 

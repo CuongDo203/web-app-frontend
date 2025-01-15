@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getOrderById, resetUpdateStatus, updateOrderStatus } from '../../../../actions/AdminActions';
 import { toast } from 'react-toastify';
+import './OrderDetail.css';
 
 function OrderDetail() {
 
@@ -32,56 +33,72 @@ function OrderDetail() {
   }
   
   return (
-    <div className='container order-admin-detail'>
-      <div className='row'>
-        <div className='col-md-6'>
-          <h3>Order information</h3>
-          <p><strong>Order ID: {order.id}</strong></p>
-          <p><strong>User ID: {order.user_id}</strong></p>
-          <p><strong>Full Name: {order.fullname}</strong></p>
-          <p><strong>Phone Number: {order.phone_number}</strong></p>
-          <p><strong>Email: {order.email}</strong></p>
-          <p><strong>Address: {order.address}</strong></p>
-          <p><strong>Note: {order.note}</strong></p>
-          <p><strong>Order Date: {order.order_date}</strong></p>
-          <div className='form-group order-status'>
-            <label htmlFor="statusSelect"><strong>Status: </strong></label>
-            <select className='form-control' id='statusSelect' value={orderStatus}
-              onChange={(e) => setOrderStatus(e.target.value)}>
-              <option value="pending">Pending</option>
-              <option value="processing">Processing</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
+    <div className="order-detail-container">
+        <div className="order-info">
+            <p>
+                <strong>Full Name</strong>
+                {order.fullname}
+            </p>
+            <p>
+                <strong>Phone Number</strong>
+                {order.phone_number}
+            </p>
+            <p>
+                <strong>Email</strong>
+                {order.email}
+            </p>
+            <p>
+                <strong>Address</strong>
+                {order.address}
+            </p>
+            <p>
+                <strong>Note</strong>
+                {order.note}
+            </p>
+            <p>
+                <strong>Order Date</strong>
+                {new Date(order.order_date).toLocaleDateString('vi-VN')}
+            </p>
+            <div className='order-status'>
+                <label htmlFor="statusSelect">Status</label>
+                <select 
+                    id='statusSelect' 
+                    value={orderStatus}
+                    onChange={(e) => setOrderStatus(e.target.value)}
+                >
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipping">Shipping</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
         </div>
-        <h3>Order Detail</h3>
-        <Table>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order.order_details.map((item, idx) => (
-              <tr key={idx}>
-                <td>{item.product.name}</td>
-                <td>{item.product.price}</td>
-                <td>{item.numberOfProducts}</td>
-              </tr>
-            ))}
-            {/* <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr> */}
-          </tbody>
-        </Table>
+        
+        <div className="order-items">
+            <h3>Order Items</h3>
+            <Table responsive>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {order.order_details?.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.product.name}</td>
+                            <td>${item.price}</td>
+                            <td>{item.numberOfProducts}</td>
+                            <td>${item.price * item.numberOfProducts}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </div>
         <Button variant='primary' className='col-md-2' onClick={() => handleUpdateOrderStatus()}>Save</Button>
-      </div>
     </div>
   )
 }
