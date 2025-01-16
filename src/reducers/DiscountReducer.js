@@ -150,6 +150,21 @@ const DiscountReducer = (state = initialState, action) => {
                 discounts: [],
                 loading: false
             }
+        case 'APPLY_DISCOUNT_TO_PRODUCT_REQUEST':
+            return {
+                ...state,
+                loading: true
+            }
+        case 'APPLY_DISCOUNT_TO_PRODUCT_SUCCESS':
+            return {
+                ...state,
+                loading: false
+            }
+        case 'APPLY_DISCOUNT_TO_PRODUCT_FAILURE':
+            return {
+                ...state,
+                loading: false
+            }
         default:
             return state
     }

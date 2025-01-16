@@ -113,7 +113,15 @@ export const applyDiscountToCategory = (discountId, categoryId) => async (dispat
 export const applyDiscountToProduct = (discountId, productId) => async (dispatch) => {
     try {
         dispatch({ type: 'APPPLY_DISCOUNT_TO_PRODUCT_REQUEST' })
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/discounts/${discountId}/product/${productId}`)
+        const parsedDiscountId = Number(discountId);
+        const parsedProductId = Number(productId);
+        
+        if (isNaN(parsedDiscountId) || isNaN(parsedProductId)) {
+            throw new Error('Invalid discount or product ID');
+        }
+        console.log('parsedDiscountId', parsedDiscountId)
+        console.log('parsedProductId', parsedProductId)
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/discount_product?discount_id=${parsedDiscountId}&product_id=${parsedProductId}`)
         dispatch({ type: 'APPPLY_DISCOUNT_TO_PRODUCT_SUCCESS' })
         return { success: true };
     }

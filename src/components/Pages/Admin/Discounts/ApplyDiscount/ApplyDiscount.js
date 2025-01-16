@@ -26,8 +26,8 @@ function ApplyDiscount() {
     const [isLoading, setIsLoading] = useState(false);
 
     // Get states from redux store
-    const { discounts = [], loading: discountLoading } = useSelector(state => state.getDiscountsReducer);
-    const { products = [], loading: productLoading } = useSelector(state => state.getProducts);
+    const { discounts = [] } = useSelector(state => state.getDiscountsReducer);
+    const { products = [] } = useSelector(state => state.getProducts);
     const { categories } = useSelector(state => state.getCategoryReducer);
 
     // Fetch discounts and items when the page loads
@@ -43,7 +43,6 @@ function ApplyDiscount() {
             // Fetch products if applyType is "product"
             if (applyType === "product") {
                 dispatch(getProducts("", 0, 0, 30)); // Get first 100 products
-                console.log('products', products);
             }
             else {
                 dispatch(getCategories());
