@@ -48,7 +48,7 @@ const productReducer = (state = initialState, action) => {
         case 'FETCH_CATEGORIES':
             return {
                 ...state,
-                categories: action.payload
+                categories: action.payload.categories
             }
         default:
             return state

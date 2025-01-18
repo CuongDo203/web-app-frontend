@@ -1,7 +1,10 @@
 const initialState = {
     categories: [],
     loading: false,
-    error: null
+    error: null,
+    totalPages: 0,
+    currentPage: 0,
+    limitPerPage: 10
 }
 
 const categoryReducer = (state = initialState, action) => {
@@ -15,7 +18,8 @@ const categoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                categories: action.payload
+                categories: action.payload.categories,
+                totalPages: action.payload.totalPage
             }
         case 'FETCH_CATEGORIES_FAILURE':
             return {
@@ -56,6 +60,11 @@ const categoryReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload,
                 loading: false
+            }
+        case 'CHANGE_CATEGORY_PAGE':
+            return {
+                ...state,
+                currentPage: action.payload
             }
         default:
             return state

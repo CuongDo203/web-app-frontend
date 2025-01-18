@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Table, Button, Form, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Table, Button, Form, Spinner, Pagination } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveDiscounts } from "../../../../../actions/DiscountActions";
 import { getCategories } from "../../../../../actions/CategoryAction";
@@ -7,6 +7,7 @@ import { getProducts } from "../../../../../actions/productActions";
 import "./ApplyDiscount.css";
 import { toast } from "react-toastify";
 import { applyDiscountToCategory, applyDiscountToProduct } from "../../../../../actions/DiscountActions";
+import { changePage } from "../../../../../actions/productActions";
 
 // Add this helper function after imports
 const formatDate = (dateString) => {
@@ -28,12 +29,23 @@ function ApplyDiscount() {
     // Get states from redux store
     const { discounts = [] } = useSelector(state => state.getDiscountsReducer);
     const { products = [] } = useSelector(state => state.getProducts);
-    const { categories } = useSelector(state => state.getCategoryReducer);
+    const { categories, currentPage: categoryPage, totalPages: categoryTotalPages } = useSelector(state => state.getCategoryReducer);
+    const { currentPage: productPage, limitPerPages, visiblePages, totalPages: productTotalPages } = useSelector(state => state.getProducts);
 
     // Fetch discounts and items when the page loads
     useEffect(() => {
         fetchData();
-    }, [dispatch, applyType]);
+    }, [dispatch, applyType, productPage]);
+
+    const handlePageChange = (page) => {
+        if (applyType === "product") {
+            dispatch(changePage(page));
+        }
+        else {
+            dispatch(getCategories(page));
+        }
+        setSelectedItems([])
+    }
 
     const fetchData = () => {
         try {
@@ -42,10 +54,10 @@ function ApplyDiscount() {
             dispatch(getActiveDiscounts());
             // Fetch products if applyType is "product"
             if (applyType === "product") {
-                dispatch(getProducts("", 0, 0, 30)); // Get first 100 products
+                dispatch(getProducts("", 0, productPage, limitPerPages));
             }
             else {
-                dispatch(getCategories());
+                dispatch(getCategories(categoryPage));
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -196,6 +208,7 @@ function ApplyDiscount() {
                                 </tbody>
                             </Table>
                         )}
+
                     </div>
                 </Col>
             </Row>
@@ -211,6 +224,67 @@ function ApplyDiscount() {
                     </Button>
                 </Col>
             </Row>
+            {applyType === "product" ?
+                (<Pagination className="d-flex justify-content-center mt-5">
+                    <Pagination.First
+                        disabled={productPage === 0}
+                        onClick={() => handlePageChange(0)}
+                    />
+                    <Pagination.Prev
+                        disabled={productPage === 0}
+                        onClick={() => handlePageChange(productPage - 1)}
+                    />
+
+                    {visiblePages.map((page) => (
+                        <Pagination.Item
+                            key={page}
+                            active={page === productPage}
+                            onClick={() => handlePageChange(page)}
+                        >
+                            {page + 1}
+                        </Pagination.Item>
+                    ))}
+
+                    <Pagination.Next
+                        disabled={productPage === productTotalPages - 1}
+                        onClick={() => handlePageChange(productPage + 1)}
+                    />
+                    <Pagination.Last
+                        disabled={productPage === productTotalPages - 1}
+                        onClick={() => handlePageChange(productTotalPages - 1)}
+                    />
+                </Pagination>) : (
+                    <Pagination className="d-flex justify-content-center mt-5">
+                        <Pagination.First
+                            disabled={categoryPage === 0}
+                            onClick={() => handlePageChange(0)}
+                        />
+                        <Pagination.Prev
+                            disabled={categoryPage === 0}
+                            onClick={() => handlePageChange(categoryPage - 1)}
+                        />
+
+                        {[...Array(categoryTotalPages)].map((_, index) => (
+                            <Pagination.Item
+                                key={index}
+                                active={index === categoryPage}
+                                onClick={() => handlePageChange(index)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+
+                        <Pagination.Next
+                            disabled={categoryPage === categoryTotalPages - 1}
+                            onClick={() => handlePageChange(categoryPage + 1)}
+                        />
+                        <Pagination.Last
+                            disabled={categoryPage === categoryTotalPages - 1}
+                            onClick={() => handlePageChange(categoryTotalPages - 1)}
+                        />
+                    </Pagination>
+                )
+            }
         </Container>
     );
 }

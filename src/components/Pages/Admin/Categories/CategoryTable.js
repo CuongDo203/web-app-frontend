@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Modal, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { Button, Table, Modal, Form, Pagination } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../../../actions/productActions';
 import { MdDelete } from "react-icons/md";
 import { toast } from 'react-toastify';
 import './Categories.css'
-import { addCategory, deleteCategory } from '../../../../actions/CategoryAction';
+import { addCategory, deleteCategory, changeCategoryPage } from '../../../../actions/CategoryAction';
 
 function CategoryTable() {
   const [showModal, setShowModal] = useState(false);
@@ -14,6 +14,7 @@ function CategoryTable() {
   const [data, setData] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
+  const { currentPage, totalPages } = useSelector(state => state.getCategoryReducer);
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -24,7 +25,7 @@ function CategoryTable() {
       toast.error('Category name is required!');
       return;
     }
-    
+
     dispatch(addCategory({ name: newCategory }))
       .then(() => {
         toast.success('Category added successfully!');
@@ -45,7 +46,7 @@ function CategoryTable() {
 
   const handleConfirmDelete = () => {
     if (!categoryToDelete) return;
-    
+
     dispatch(deleteCategory(categoryToDelete.id))
       .then(() => {
         toast.success('Category deleted successfully!');
@@ -59,9 +60,9 @@ function CategoryTable() {
   };
 
   useEffect(() => {
-    dispatch(getCategories()).then((dataResponse) => {
+    dispatch(getCategories(currentPage, 10)).then((dataResponse) => {
       console.log(dataResponse)
-      setData(dataResponse)
+      setData(dataResponse.categories)
     })
   }, [dispatch])
 
@@ -140,23 +141,51 @@ function CategoryTable() {
                 <td>{item.name}</td>
                 <td>
                   <div>
-                    <MdDelete 
-                    // className="delete-icon" 
-                    onClick={() => handleDeleteClick(item)}
-                    style={{ 
-                      cursor: 'pointer', 
-                      color: '#dc3545',
-                      fontSize: '1.2rem' 
-                    }}
-                  />
+                    <MdDelete
+                      onClick={() => handleDeleteClick(item)}
+                      style={{
+                        cursor: 'pointer',
+                        color: '#dc3545',
+                        fontSize: '1.2rem'
+                      }}
+                    />
                   </div>
-                  
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
+
+      <Pagination className="d-flex justify-content-center mt-5">
+        <Pagination.First
+          disabled={currentPage === 0}
+          onClick={() => dispatch(changeCategoryPage(0))}
+        />
+        <Pagination.Prev
+          disabled={currentPage === 0}
+          onClick={() => dispatch(changeCategoryPage(currentPage - 1))}
+        />
+
+        {[...Array(totalPages)].map((_, idx) => (
+          <Pagination.Item
+            key={idx}
+            active={idx === currentPage}
+            onClick={() => dispatch(changeCategoryPage(idx))}
+          >
+            {idx + 1}
+          </Pagination.Item>
+        ))}
+
+        <Pagination.Next
+          disabled={currentPage === totalPages - 1}
+          onClick={() => dispatch(changeCategoryPage(currentPage + 1))}
+        />
+        <Pagination.Last
+          disabled={currentPage === totalPages - 1}
+          onClick={() => dispatch(changeCategoryPage(totalPages - 1))}
+        />
+      </Pagination>
     </div>
   )
 }
