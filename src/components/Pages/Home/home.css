@@ -43,7 +43,7 @@
     padding: 0 20px;
 }
 
-.form_control{
+#home .form_control{
     background-color: transparent;
     color: #fff;
     width: 100%;

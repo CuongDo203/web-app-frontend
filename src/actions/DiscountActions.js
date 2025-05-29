@@ -135,15 +135,46 @@ export const applyDiscountToProduct = (discountId, productId) => async (dispatch
 export const getDiscountsByCategory = (categoryId) => async (dispatch) => {
     try {
         dispatch({ type: 'FETCH_DISCOUNTS_BY_CATEGORY_REQUEST' });
+
         const response = await axios.get(
-            `${process.env.REACT_APP_API_BASE_URL}/discounts/category/${categoryId}`
+            `${process.env.REACT_APP_API_BASE_URL}/discounts/category?id=${categoryId}`
         );
-        const data = response.data;
+        const data = response.data.discountResponses;
         dispatch({ type: 'FETCH_DISCOUNTS_BY_CATEGORY_SUCCESS', payload: data });
         return { success: true, data };
     } catch (err) {
         console.log(err);
         dispatch({ type: 'FETCH_DISCOUNTS_BY_CATEGORY_FAILURE' });
+        return { success: false, error: err.message };
+    }
+}
+
+export const getDiscountsByProduct = (productId) => async (dispatch) => {
+    try {
+        dispatch({ type: 'FETCH_DISCOUNTS_BY_PRODUCT_REQUEST' });
+        const response = await axios.get(
+            `${process.env.REACT_APP_API_BASE_URL}/discounts/product?id=${productId}`
+        );
+        const data = response.data.discountResponses;
+        dispatch({ type: 'FETCH_DISCOUNTS_BY_PRODUCT_SUCCESS', payload: data });
+        return { success: true, data };
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: 'FETCH_DISCOUNTS_BY_PRODUCT_FAILURE' });
+        return { success: false, error: err.message };
+    }
+}
+
+export const checkValidDiscount = (discountCode) => async (dispatch) => {
+    try {
+        dispatch({ type: 'CHECK_VALID_DISCOUNT_REQUEST' });
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/discounts/validate?code=${discountCode}`);
+        const data = response.data;
+        dispatch({ type: 'CHECK_VALID_DISCOUNT_SUCCESS', payload: data });
+        return { success: true, data };
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: 'CHECK_VALID_DISCOUNT_FAILURE' });
         return { success: false, error: err.message };
     }
 }

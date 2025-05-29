@@ -1,5 +1,6 @@
 const initialState = {
     discountData: {
+        id: null,
         code: '',
         name: '',
         discount_value: 0,
@@ -141,10 +142,27 @@ const DiscountReducer = (state = initialState, action) => {
         case 'FETCH_DISCOUNTS_BY_CATEGORY_SUCCESS':
             return {
                 ...state,
-                discounts: action.payload.discountResponses,
+                discounts: action.payload,
                 loading: false
             }
         case 'FETCH_DISCOUNTS_BY_CATEGORY_FAILURE':
+            return {
+                ...state,
+                discounts: [],
+                loading: false
+            }
+        case 'FETCH_DISCOUNTS_BY_PRODUCT_REQUEST':
+            return {
+                ...state,
+                loading: true
+            }
+        case 'FETCH_DISCOUNTS_BY_PRODUCT_SUCCESS':
+            return {
+                ...state,
+                discounts: action.payload,
+                loading: false
+            }
+        case 'FETCH_DISCOUNTS_BY_PRODUCT_FAILURE':
             return {
                 ...state,
                 discounts: [],
@@ -161,6 +179,22 @@ const DiscountReducer = (state = initialState, action) => {
                 loading: false
             }
         case 'APPLY_DISCOUNT_TO_PRODUCT_FAILURE':
+            return {
+                ...state,
+                loading: false
+            }
+        case 'CHECK_VALID_DISCOUNT_REQUEST':
+            return {
+                ...state,
+                loading: true
+            }
+        case 'CHECK_VALID_DISCOUNT_SUCCESS':
+            return {
+                ...state,
+                discountData: action.payload,
+                loading: false
+            }
+        case 'CHECK_VALID_DISCOUNT_FAILURE':
             return {
                 ...state,
                 loading: false
