@@ -75,3 +75,7 @@ td {
     border-radius: 30px;
     width: 200px;
 }
+
+#order form .invalid-feedback {
+    color: yellow;
+}

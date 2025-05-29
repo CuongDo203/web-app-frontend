@@ -5,21 +5,24 @@ import './orderConfirm.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col, Table, Form, FormGroup, FormLabel } from 'react-bootstrap';
 import { getOrderById } from '../../../actions/OrderConfirmAction';
+import { useParams } from 'react-router-dom';
 
 function OrderConfirm() {
 
   const { orderResponse, error } = useSelector(state => state.getOrderDetail)
   const dispatch = useDispatch()
 
+  const { id } = useParams();
+
   useEffect(() => {
-    dispatch(getOrderById(10))
-  }, [dispatch])
+    dispatch(getOrderById(id))
+  }, [dispatch, id])
 
   return (
     <>
       <Header />
-      <Container id="orderConfirm">
-        <Row >
+      {!error && <Container id="orderConfirm">
+        <Row className='order-confirm-header'>
           <Col className='text-center'>
             <h1 >Xác nhận đơn hàng</h1>
             <p>Cảm ơn bạn đã đặt hàng! Dưới đây là thông tin chi tiết về đơn hàng của bạn.</p>
@@ -84,7 +87,7 @@ function OrderConfirm() {
             <h4>Tổng giá: ${orderResponse.total_money}</h4>
           </Col>
         </Row>
-      </Container>
+      </Container>}
       <Footer />
     </>
   )

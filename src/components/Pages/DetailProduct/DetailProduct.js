@@ -7,12 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { thumbnailClick } from '../../../actions/detailProductAction'
 import CartService from '../../../services/CartService'
 import { toast } from 'react-toastify'
+import { Carousel, Image } from 'react-bootstrap'
 
 function DetailProduct() {
 
     const { productImages, currentImageIndex, description, price, id } = useSelector((state) => state.getDetailProduct)
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const [quantity, setQuantity] = useState(1)
     const cartService = new CartService()
@@ -25,7 +26,7 @@ function DetailProduct() {
     }
 
     const handleBuy = () => {
-        navigate("/orders")
+        
     }
 
     const handleAddToCart = () => {
@@ -53,31 +54,16 @@ function DetailProduct() {
             <div id="detailProduct" className="container">
                 <div className="intro-section">
                     <h1>Đây là trang chi tiết sản phẩm</h1>
-                    <p>Sử dụng bootstrap</p>
                 </div>
                 <div className="row detailSection">
                     <div className="col-md-6">
-                        <div id="carouselExample" className="carousel slide" data-bs-ride="carousel">
-                            <div className="carousel-inner">
-                                {productImages.map((productImage, idx) => (
-                                    <div className={"carousel-item" + (idx === currentImageIndex ? " active" : "")} key={idx}>
-                                        <div className="square-image">
-                                            <img src={productImage.image_url} alt="Product" className="product-image" />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                                data-bs-slide="prev">
-                                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span className="visually-hidden">Previous</span>
-                            </button>
-                            <button className="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                                data-bs-slide="next">
-                                <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span className="visually-hidden">Next</span>
-                            </button>
-                        </div>
+                        <Carousel className='image-slide' >
+                            {productImages.map((productImage, idx) => (
+                                <Carousel.Item interval={1500} key={idx}  className="square-image">
+                                    <Image src={productImage.image_url}/>
+                                </Carousel.Item>
+                            ))}
+                        </Carousel>
                         <div className="row">
                             <div className="thumbnail-container">
                                 {productImages.map((productImage, idx) => (

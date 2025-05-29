@@ -3,6 +3,7 @@ const initialState = {
     cartItems: [],
     couponCode: '',
     totalAmount: 0,
+    idOrderPlaced: null,
     orderData: {
         id: 0,
         user_id: 0,
@@ -17,6 +18,9 @@ const initialState = {
         coupon_code: '',
         cart_items: []
     },
+    orders: [],
+    totalPage: 0,
+    loading: false,
     error: ""
 }
 
@@ -33,14 +37,35 @@ const OrderReducer = (state = initialState, action) => {
                 cartItems: [],
                 error: action.payload
             }    
-        case 'PLACE_ORDER':
+        case 'PLACE_ORDER_SUCCESSFULLY':
+            console.log('place order payload: ', action.payload)
             return {
                 ...state,
-                orderData: {
-                    ...state.orderData,
-                    ...(action.payload)
-                }
+                idOrderPlaced: action.payload
             }
+        case 'PLACE_ORDER_FAILED':
+            return {
+                ...state,
+                idOrderPlaced: null
+            }
+        case 'FETCH_ORDERS_REQUEST': 
+            return {
+                ...state,
+                loading: true   
+            }
+        case 'FETCH_ORDERS_SUCCESSFULLY':  
+            return {
+                ...state,
+                orders: action.payload.orders,
+                totalPage: action.payload.totalPages,
+                loading: false
+            }
+        case 'FETCH_ORDERS_FAILED':
+            return {
+                ...state,
+                orders: [],
+                loading: false,
+            } 
         default:
             return state
     }

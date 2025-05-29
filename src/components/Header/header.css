@@ -1,34 +1,111 @@
-.navbar>.container {
-    height: 50px;
-
-}
-
+/* Base navbar styles */
 .navbar {
     position: fixed;
     z-index: 10;
     top: 0;
     left: 0;
     right: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar>.container {
+    min-height: 60px;
 }
 
 .navbar>.container a {
     text-decoration: none;
     color: rgb(181,183,184);
+    transition: color 0.3s ease;
 }
 
-.navbar-collapse {
-    background-color: rgb(43,48,53);
-    border-radius: 5px;
+/* Responsive styles */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: rgb(43,48,53);
+        padding: 1rem;
+        border-radius: 0.25rem;
+        margin-top: 0.5rem;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
 
+    .nav-link {
+        padding: 0.8rem 1rem !important;
+        border-radius: 0.25rem;
+        margin: 0.2rem 0;
+    }
+
+    .nav-link.isActive {
+        background-color: rgba(0,123,255,0.1);
+    }
+
+    .nav-link.isActive::after {
+        display: none;
+    }
+
+    #basic-nav-dropdown {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+    }
 }
 
-.navbar-nav .isActive {
-    background-color: blue;
-    height: 100%;
-    border-radius: 15px;
+/* Active state and icons */
+.nav-link.isActive {
+    color: #fff !important;
+}
+
+.nav-link svg {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+    vertical-align: middle;
 }
 
 #user-icon {
-    scale: 2;
-    margin-right: 6px;
+    font-size: 1.8rem;
+    color: rgb(181,183,184);
+    transition: color 0.3s ease;
+}
+
+#user-icon:hover {
+    color: #fff;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    background-color: rgb(43,48,53);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    color: rgb(181,183,184);
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* Active and hover states */
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+}
+
+.nav-link.isActive::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #007bff;
 }

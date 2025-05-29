@@ -5,43 +5,74 @@
     margin-top: 30px;
 }
 
+/* Base styles for cards */
 .container .card {
-    max-width: 340px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
+.card {
+    height: auto;
+    min-height: 450px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Card image */
 .card-img-top {
-    /* max-width: 336px; */
-    max-height: 336px;
+    height: 200px; /* Fixed image height */
+    object-fit: cover;
+    cursor: pointer;
+    width: 100%;
 }
 
-.search_box{
+/* Search Box Layout */
+.search_box {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 20px;
+    width: 100%;
+    padding: 0 20px;
 }
 
-.form_control{
+#home .form_control{
     background-color: transparent;
     color: #fff;
+    width: 100%;
 }
 
-.search_input{
-    width: 300px;
-    background-color: rgb(19, 23, 42);
-    margin-right: 10px;
-    border-color: rgba(255, 255, 255, 0.5);
+/* Search Input Base Styles */
+.search_input {
+    width: min(500px, 100%);
+    background-color: rgba(19, 23, 42, 0.8);
     color: #fff;
+    padding: 12px 16px;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
+/* Focus States */
 .search_input:focus {
-    background-color: transparent;
-    color: #fff;
+    background-color: rgba(19, 23, 42, 0.95);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+    outline: none;
 }
 
-.form_control::placeholder{
-    color: rgba(255, 255, 255, 0.5);
-    opacity: 1;
+.search_input::placeholder{
+    color: rgba(255, 255, 255, 0.7); /* Brighter placeholder */
+    font-weight: 500;
+    opacity: 0.8;
 }
 
 /* Product section */
@@ -86,6 +117,25 @@
     color: rgb(242, 126, 212);
 }
 
+/* Description styles */
+.card-text {
+    height: auto;
+    min-height: 72px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+/* Price and warranty styles */
+.product-warranty,
+.product-price {
+    margin-bottom: 8px;
+}
+
 .product_price{
     color: #fff;
 }
@@ -103,4 +153,113 @@
 
 .space_x{
     margin: 0 5px;
+}
+
+/* Title styles */
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    height: 48px; /* Height for 2 lines of text */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .card {
+        min-height: 400px;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .search_input {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .search_box {
+        flex-direction: column;
+        padding: 0 15px;
+    }
+
+    .search_input {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .search_input:focus {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        min-height: 380px;
+    }
+
+    .card-img-top {
+        height: 160px;
+    }
+
+    .product_category {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .search_box {
+        flex-direction: column;
+    }
+
+    .search_input {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Grid adjustments */
+@media (min-width: 768px) {
+    
+    
+    .col {
+        padding: 0 15px;
+    }
+
+    .search_input:focus {
+        width: min(600px, 100%);
+    }
+}
+
+@media (max-width: 767px) {
+    .search_box {
+        padding: 0 15px;
+    }
+
+    .search_input {
+        width: 100%;
+        font-size: 0.875rem;
+    }
+    
+    .search_input:focus {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .search_box {
+        padding: 0 10px;
+    }
 }

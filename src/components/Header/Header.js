@@ -13,13 +13,15 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../actions/authActions';
 import { getUser } from '../../services/authService';
 
+// Remove the getActiveNavItem function and simplify the navigation state management
 function Header() {
-
     const user = getUser()
     const dispatch = useDispatch()
-    const [activeNavItem, setActiveNavItem] = useState(0)
-    const navigate = useNavigate()
     const location = useLocation()
+    const navigate = useNavigate()
+    
+    // Directly derive active state from location
+    const isActive = (path) => location.pathname === path
 
     const handleLogout = () => {
         dispatch(logout())
@@ -31,45 +33,46 @@ function Header() {
         navigate(`/user-profile/${userId}`)
     }
 
-    const getActiveNavItem = (path) => {
-        if (path === '/') {
-            return 0;
-        } else if (path === '/notifications') {
-            return 1;
-        } else if (path === '/orders') {
-            return 2;
-        }
-        return 0;
-    };
-
-    useEffect(() => {
-        const newActiveNavItem = getActiveNavItem(location.pathname);
-        setActiveNavItem(newActiveNavItem);
-    }, [location]);
+    const switchToMyOrders = () => {    
+        const userId = user.id
+        navigate(`/my-orders/${userId}`)
+    }
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
+        <Navbar 
+            collapseOnSelect 
+            expand="lg" 
+            bg="dark" 
+            data-bs-theme="dark" 
+            className="bg-body-tertiary"
+            fixed="top"
+        >
             <Container>
                 <Link className='navbar-brand' to="/">Logo</Link>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Link className={`nav-link ${activeNavItem === 0 ? "isActive" : ""}`}
-                            to="/"><IoHome /> Trang chủ</Link>
-                        <Link className={`nav-link ${activeNavItem === 1 ? "isActive" : ""}`}
-                            to="/notifications"><IoMdNotificationsOutline /> Thông báo</Link>
-                        <Link className={`nav-link ${activeNavItem === 2 ? "isActive" : ""}`}
-                            to="/orders"><FiShoppingCart /> Giỏ hàng</Link>
+                        <Link className={`nav-link d-flex align-items-center ${isActive('/') ? "isActive" : ""}`}
+                            to="/"><IoHome /> <span>Trang chủ</span></Link>
+                        <Link className={`nav-link d-flex align-items-center ${isActive('/notifications') ? "isActive" : ""}`}
+                            to="/notifications"><IoMdNotificationsOutline /> <span>Thông báo</span></Link>
+                        <Link className={`nav-link d-flex align-items-center ${isActive('/orders') ? "isActive" : ""}`}
+                            to="/orders"><FiShoppingCart /> <span>Giỏ hàng</span></Link>
                     </Nav>
                     <Nav>
-                        {user === null ? (<Link className="nav-link" to="/login">Đăng nhập</Link>) :
-                            (
-                                <NavDropdown title={<FaUserCircle id='user-icon' />} id="basic-nav-dropdown">
-                                    <NavDropdown.Item onClick={() => switchToProfile()}>Tài khoản của tôi</NavDropdown.Item>
-                                    <NavDropdown.Item >Đơn mua</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={() => handleLogout()}>Đăng xuất</NavDropdown.Item>
-                                </NavDropdown>
-                            )}
+                        {user === null ? (
+                            <Link className="nav-link" to="/login">Đăng nhập</Link>
+                        ) : (
+                            <NavDropdown 
+                                title={<FaUserCircle id='user-icon' />} 
+                                id="basic-nav-dropdown"
+                                align="end"
+                            >
+                                <NavDropdown.Item onClick={() => switchToProfile()}>Tài khoản của tôi</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => switchToMyOrders()}>Đơn mua</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => handleLogout()}>Đăng xuất</NavDropdown.Item>
+                            </NavDropdown>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

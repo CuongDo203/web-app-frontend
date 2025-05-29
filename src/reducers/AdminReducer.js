@@ -51,7 +51,7 @@ export const OrderAdminReducer = (state = orderState, action) => {
                 isLoading: false,
                 error: action.payload
             }
-        case 'CHANGE_PAGE':
+        case 'CHANGE_ORDER_PAGE':
             return {
                 ...state,
                 currentOrderPage: action.payload,
@@ -99,11 +99,68 @@ export const OrderAdminReducer = (state = orderState, action) => {
     }
 }
 
-export const changePage = (page) => async (dispatch) => {
-    try {
-        await dispatch({ type: 'CHANGE_PAGE', payload: page })
-    }
-    catch (err) {
-        console.log(err)
+const productState = {
+    totalProductPages: 0,
+    currentProductPage: 0,
+    limitProductPerPages: 15,
+    keyword: '',
+    visibleProductPages: [],
+    isLoading: false,
+    products: [],
+    errors: '',
+    addNewPdSuccessfully: false
+}
+
+export const ProductAdminReducer = (state = productState, action) => {
+    switch (action.type) {
+        case 'GET_PRODUCTS':
+            return {
+                ...state,
+                isLoading: true
+            }
+        case 'GET_PRODUCTS_SUCCESSFULLY':
+            return {
+                ...state,
+                products: action.payload.products,
+                totalProductPages: action.payload.totalPage,
+                currentProductPage: action.payload.page,
+                visibleProductPages: generateVisiblePageArray(state.currentProductPage, action.payload.totalPage),
+                keyword: action.payload.keyword,
+                isLoading: false
+            }
+        case 'GET_PRODUCTS_FAILED': 
+            return {
+                ...state,
+                products: [],
+                totalProductPages: 0,
+                visibleProductPages: [],
+                isLoading: false,
+                keyword: '',
+                currentProductPage: 0,
+                error: action.payload
+            }
+        case 'ADD_NEW_PD_SUCCESSFULLY':
+            return {
+                ...state,
+                addNewPdSuccessfully: true
+            }
+        case 'ADD_NEW_PD_FAILED':
+            return {
+                ...state,
+                addNewPdSuccessfully: false
+            }
+        case 'SET_SEARCH_KEYWORD':
+            return {
+                ...state,
+                keyword: action.payload,
+            };
+        case 'CHANGE_PRODUCT_PAGE':
+            return {
+                ...state,
+                currentProductPage: action.payload,
+                visibleProductPages: generateVisiblePageArray(action.payload, state.totalProductPages)
+            }
+        default:
+            return state;
     }
 }
